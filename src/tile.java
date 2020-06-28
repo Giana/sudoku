@@ -35,4 +35,9 @@ public class tile
     public boolean getCorrect() { return this.correct; }
 
     public void setCorrect(boolean correct) { this.correct = correct; }
+
+    public void clearTile()
+    {
+        this.value = 0;
+    }
 }
