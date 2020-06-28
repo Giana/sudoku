@@ -5,7 +5,9 @@ public class grid
     boolean correct;
 
     public subgrid getSubgrid(int x, int y) { return this.subgrids[x][y]; };
-    
+
+    public void setSubgrid(int x, int y, subgrid subgrid) { this.subgrids[x][y] = subgrid; }
+
     public boolean getRevealed() { return this.revealed; }
 
     public void setRevealed(boolean revealed) { this.revealed = revealed; }
