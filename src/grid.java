@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Random;
+
 public class grid
 {
     subgrid[][] subgrids = new subgrid[3][3];
@@ -30,6 +33,15 @@ public class grid
                 subgrids[i][j].clearSubgrid();
             }
         }
+    }
+
+    public int generateRandomNumber(List<Integer> available)
+    {
+        int upper = available.size();
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(upper);
+
+        return available.get(randomIndex);
     }
 
     private void fillGrid()
