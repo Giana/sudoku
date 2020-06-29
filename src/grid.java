@@ -35,13 +35,11 @@ public class grid
         }
     }
 
-    public int generateRandomNumber(List<Integer> available)
+    public int getRandomNumber(int upper)
     {
-        int upper = available.size();
         Random rand = new Random();
-        int randomIndex = rand.nextInt(upper);
 
-        return available.get(randomIndex);
+        return rand.nextInt(upper - 1);
     }
 
     private void fillGrid()
