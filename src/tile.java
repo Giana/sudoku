@@ -1,10 +1,10 @@
 public class tile
 {
     private int value;
-    private int subRow;
-    private int superRow;
-    private int subColumn;
-    private int superColumn;
+    private int row;
+    private int column;
+    private int index;
+    private int section;
     private boolean revealed;
     private boolean correct;
 
@@ -12,21 +12,21 @@ public class tile
 
     public void setValue(int value) { this.value = value; }
 
-    public int getSubRow() { return this.subRow; }
+    public int getRow() { return this.row; }
 
-    public void setSubRow(int subRow) { this.subRow = subRow; }
+    public void setRow(int row) { this.row = row; }
 
-    public int getSuperRow() { return this.superRow; }
+    public int getColumn() { return this.column; }
 
-    public void setSuperRow(int superRow) { this.superRow = superRow; }
+    public void setColumn(int column) { this.column = column; }
 
-    public int getSubColumn() { return this.subColumn; }
+    public int getIndex() { return this.index; }
 
-    public void setSubColumn(int subColumn) { this.subColumn = subColumn; }
+    public void setIndex(int index) { this.index = index; }
 
-    public int getSuperColumn() { return this.superColumn; }
+    public int getSection() { return this.section; }
 
-    public void setSuperColumn(int superColumn) { this.superColumn = superColumn; }
+    public void setSection(int section) { this.section = section; }
 
     public boolean getRevealed() { return this.revealed; }
 
