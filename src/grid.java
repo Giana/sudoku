@@ -1,16 +1,10 @@
-import java.util.List;
 import java.util.Random;
 
 public class grid
 {
-    subgrid[][] subgrids = new subgrid[3][3];
     boolean revealed;
     boolean correct;
     boolean filled;
-
-    public subgrid getSubgrid(int x, int y) { return this.subgrids[x][y]; };
-
-    public void setSubgrid(int x, int y, subgrid subgrid) { this.subgrids[x][y] = subgrid; }
 
     public boolean getRevealed() { return this.revealed; }
 
@@ -30,7 +24,7 @@ public class grid
         {
             for(int j = 0; j < 3; j++)
             {
-                subgrids[i][j].clearSubgrid();
+                // subgrids[i][j].clearSubgrid();
             }
         }
     }
@@ -51,6 +45,17 @@ public class grid
         while(numFilled != 81)
         {
 
+        }
+    }
+
+    private void printGrid()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            for(int j = 0; j < 3; j++)
+            {
+                // System.out.print(subgrids[i][j]);
+            }
         }
     }
 }
