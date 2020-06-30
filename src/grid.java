@@ -2,9 +2,9 @@ import java.util.Random;
 
 public class grid
 {
+    tile[][] tiles = new tile[9][9];
     boolean revealed;
     boolean correct;
-    boolean filled;
 
     public boolean getRevealed() { return this.revealed; }
 
@@ -14,9 +14,12 @@ public class grid
 
     public void setCorrect(boolean correct) { this.correct = correct; }
 
-    public boolean getFilled() { return this.filled; }
-
-    public void setFilled(boolean filled) { this.filled = filled; }
+    public grid()
+    {
+        fillGrid();
+        revealed = false;
+        correct = false;
+    }
 
     public void clearGrid()
     {
