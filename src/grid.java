@@ -1,8 +1,14 @@
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class grid
 {
-    tile[][] tiles = new tile[9][9];
+    static int N = 9;
+    static int SUB_N = 3;
+
+    tile[][] tiles;
+    int[] vals;
     boolean revealed;
     boolean correct;
 
@@ -16,6 +22,16 @@ public class grid
 
     public grid()
     {
+        tiles = new tile[N][N];
+
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                tiles[i][j] =  new tile();
+            }
+        }
+
         fillGrid();
         revealed = false;
         correct = false;
@@ -23,11 +39,11 @@ public class grid
 
     public void clearGrid()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < N; i++)
         {
-            for(int j = 0; j < 3; j++)
+            for(int j = 0; j < N; j++)
             {
-                // subgrids[i][j].clearSubgrid();
+                tiles[i][j].clearTile();
             }
         }
     }
@@ -39,26 +55,80 @@ public class grid
         return rand.nextInt(upper - 1);
     }
 
+    public boolean rowViolation(tile currentTile)
+    {
+        int row = currentTile.getRow();
+        int tileVal = currentTile.getValue();
+
+        // Iterate over row
+        for(int i = 0; i < N; i++)
+        {
+            int currVal = tiles[i][row].getValue();
+
+            // There is a row violation
+            if(tileVal == currVal)
+            {
+                return true;
+            }
+        }
+
+        // There is no row violation
+        return false;
+    }
+
+    public boolean columnViolation(tile currentTile)
+    {
+        int column = currentTile.getColumn();
+        int tileVal = currentTile.getValue();
+
+        // Iterate over column
+        for(int i = 0; i < N; i++)
+        {
+            int currVal = tiles[column][i].getValue();
+
+            // There is a column violation
+            if(tileVal == currVal)
+            {
+                return true;
+            }
+        }
+
+        // There is no column violation
+        return false;
+    }
+
+    public boolean subgridViolation()
+    {
+        
+    }
+
+    private boolean violation(tile[] currentValues, tile test)
+    {
+
+    }
+
     private void fillGrid()
     {
-        int numFilled = 0;   // Tiles filled
 
-        clearGrid();
-
-        while(numFilled != 81)
-        {
-
-        }
     }
 
     private void printGrid()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 9; i++)
         {
-            for(int j = 0; j < 3; j++)
+            for(int j = 0; j < 9; j++)
             {
-                // System.out.print(subgrids[i][j]);
+                System.out.print(tiles[i][j].getValue() + " ");
             }
+
+            System.out.println();
         }
+    }
+
+    public static void main(String[] args)
+    {
+        grid testGrid = new grid();
+
+        testGrid.printGrid();
     }
 }
