@@ -31,6 +31,13 @@ public class tile
         this.value = 0;
     }
 
+    public tile(int x, int y)
+    {
+        this.value = 0;
+        this.x = x;
+        this.y = y;
+    }
+
     public tile(int value)
     {
         this.value = value;

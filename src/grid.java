@@ -28,7 +28,7 @@ public class grid
         {
             for(int j = 0; j < N; j++)
             {
-                tiles[i][j] =  new tile();
+                tiles[i][j] = new tile(i, j);
             }
         }
 
@@ -57,7 +57,7 @@ public class grid
 
     public boolean rowViolation(tile currentTile)
     {
-        int row = currentTile.getRow();
+        int row = currentTile.getY();
         int tileVal = currentTile.getValue();
 
         // Iterate over row
@@ -78,7 +78,7 @@ public class grid
 
     public boolean columnViolation(tile currentTile)
     {
-        int column = currentTile.getColumn();
+        int column = currentTile.getX();
         int tileVal = currentTile.getValue();
 
         // Iterate over column
@@ -99,7 +99,7 @@ public class grid
 
     public boolean subgridViolation()
     {
-        
+
     }
 
     private boolean violation(tile[] currentValues, tile test)
