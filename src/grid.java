@@ -97,14 +97,42 @@ public class grid
         return false;
     }
 
-    public boolean subgridViolation()
+    public boolean subgridViolation(tile currentTile)
     {
+        int x = currentTile.getSubgrid()[0];
+        int y = currentTile.getSubgrid()[1];
+        int tileVal = currentTile.getValue();
 
+        // Iterate over subgrid rows
+        for(int i = x; i < SUB_N + x; i++)
+        {
+            // Iterate over subgrid columns
+            for(int j = y; j < SUB_N + y; j++)
+            {
+                int currVal = tiles[i][j].getValue();
+
+                // There is a subgrid violation
+                if(tileVal == currVal)
+                {
+                    return true;
+                }
+            }
+        }
+
+        // There is no subgrid violation
+        return false;
     }
 
-    private boolean violation(tile[] currentValues, tile test)
+    private boolean violation(tile currentTile)
     {
+        // There is a violation
+        if(rowViolation(currentTile) || columnViolation(currentTile) || subgridViolation(currentTile))
+        {
+            return true;
+        }
 
+        // There is no violation
+        return false;
     }
 
     private void fillGrid()

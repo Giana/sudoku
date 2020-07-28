@@ -19,6 +19,10 @@ public class tile
 
     public void setY(int y) { this.y = y; }
 
+    public int[] getSubgrid() { return this.subgrid; }
+
+    public void setSubgrid(int[] subgrid) { this.subgrid = subgrid; }
+
     public boolean getRevealed() { return this.revealed; }
 
     public void setRevealed(boolean revealed) { this.revealed = revealed; }
@@ -34,11 +38,10 @@ public class tile
 
     public tile(int x, int y)
     {
-        subgrid = new int[2];
-        subgrid = calculateSubgrid(x, y);
         this.value = 0;
         this.x = x;
         this.y = y;
+        subgrid = calculateSubgrid(x, y);
     }
 
     public void clearTile()
