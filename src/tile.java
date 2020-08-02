@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 public class tile
 {
     private int value;
     int x;
     int y;
     int[] subgrid;
+    ArrayList<Integer> availableNumbers;
     private boolean revealed;
     private boolean correct;
 
@@ -31,22 +34,47 @@ public class tile
 
     public void setCorrect(boolean correct) { this.correct = correct; }
 
-    public tile()
-    {
-        this.value = 0;
-    }
-
     public tile(int x, int y)
     {
         this.value = 0;
         this.x = x;
         this.y = y;
         subgrid = calculateSubgrid(x, y);
+        this.availableNumbers = new ArrayList<>();
+        replenishAvailableNumbers();
     }
 
     public void clearTile()
     {
         this.value = 0;
+    }
+
+    public void replenishAvailableNumbers()
+    {
+        this.availableNumbers.clear();
+
+        for(int i = 1; i <= 9; i++)
+        {
+            this.availableNumbers.add(i);
+        }
+    }
+
+    public boolean setRandomValue()
+    {
+        if(this.availableNumbers.isEmpty())
+        {
+            return false;
+        }
+        else
+        {
+            int min = 0;
+            int max = availableNumbers.size() - 1;
+            int newVal = availableNumbers.get((int) ((Math.random() * (max - min)) + min));
+            availableNumbers.remove(newVal);
+            this.value = newVal;
+
+            return true;
+        }
     }
 
     public int[] calculateSubgrid(int x, int y)

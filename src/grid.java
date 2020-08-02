@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class grid
 {
+    int TOTAL_N = 81;
     static int N = 9;
     static int SUB_N = 3;
 
@@ -46,13 +47,6 @@ public class grid
                 tiles[i][j].clearTile();
             }
         }
-    }
-
-    public int getRandomNumber(int upper)
-    {
-        Random rand = new Random();
-
-        return rand.nextInt(upper - 1);
     }
 
     public boolean rowViolation(tile currentTile)
@@ -135,9 +129,68 @@ public class grid
         return false;
     }
 
+    private tile getPreviousTile(tile currTile)
+    {
+        int x = currTile.getX();
+        int y = currTile.getY();
+
+        // currTile is the first tile in a row
+        if(y == 0)
+        {
+            return tiles[x - 1][8];
+        }
+        // currTile is not the first tile in a row
+        else
+        {
+            return tiles[x][y - 1];
+        }
+    }
+
+    private tile getNextTile(tile currTile)
+    {
+        int x = currTile.getX();
+        int y = currTile.getY();
+
+        // currTile is the last tile in a row
+        if(y == 0)
+        {
+            return tiles[x + 1][0];
+        }
+        // currTile is not the last tile in a row
+        else
+        {
+            return tiles[x][y + 1];
+        }
+    }
+
     private void fillGrid()
     {
+        clearGrid();
 
+        int filled = 0;
+        tile currTile = tiles[0][0];
+
+        // While all tiles have not been filled with values
+        while(filled != 81)
+        {
+            // There is an available number left to try for currTile
+            if(currTile.setRandomValue())
+            {
+                // currTile does not violate sudoku rules
+                if(!violation(currTile))
+                {
+                    currTile = getNextTile(currTile);
+                    filled++;
+                }
+            }
+            // There is no available number left to try for currTile
+            else
+            {
+                currTile.replenishAvailableNumbers();
+                currTile = getPreviousTile(currTile);
+                filled--;
+            }
+        }
     }
 
     private void printGrid()
