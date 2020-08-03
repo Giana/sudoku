@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-
 public class grid
 {
     int TOTAL_N = 81;
@@ -9,7 +5,6 @@ public class grid
     static int SUB_N = 3;
 
     tile[][] tiles;
-    int[] vals;
     boolean revealed;
     boolean correct;
 
@@ -119,14 +114,7 @@ public class grid
 
     private boolean violation(tile currentTile)
     {
-        // There is a violation
-        if(rowViolation(currentTile) || columnViolation(currentTile) || subgridViolation(currentTile))
-        {
-            return true;
-        }
-
-        // There is no violation
-        return false;
+        return rowViolation(currentTile) || columnViolation(currentTile) || subgridViolation(currentTile);
     }
 
     private tile getPreviousTile(tile currTile)
@@ -171,7 +159,7 @@ public class grid
         tile currTile = tiles[0][0];
 
         // While all tiles have not been filled with values
-        while(filled != 81)
+        while(filled != TOTAL_N)
         {
             // There is an available number left to try for currTile
             if(currTile.setRandomValue())
@@ -180,7 +168,7 @@ public class grid
                 if(!violation(currTile))
                 {
                     // We are not on the last tile
-                    if(filled != 80)
+                    if(filled != TOTAL_N - 1)
                     {
                         currTile = getNextTile(currTile);
                     }
