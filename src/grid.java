@@ -51,16 +51,16 @@ public class grid
 
     public boolean rowViolation(tile currentTile)
     {
-        int row = currentTile.getY();
+        int row = currentTile.getX();
         int tileVal = currentTile.getValue();
 
         // Iterate over row
         for(int i = 0; i < N; i++)
         {
-            int currVal = tiles[i][row].getValue();
+            int currVal = tiles[row][i].getValue();
 
             // There is a row violation
-            if(tileVal == currVal)
+            if(tileVal == currVal && tiles[row][i] != currentTile)
             {
                 return true;
             }
@@ -72,16 +72,16 @@ public class grid
 
     public boolean columnViolation(tile currentTile)
     {
-        int column = currentTile.getX();
+        int column = currentTile.getY();
         int tileVal = currentTile.getValue();
 
         // Iterate over column
         for(int i = 0; i < N; i++)
         {
-            int currVal = tiles[column][i].getValue();
+            int currVal = tiles[i][column].getValue();
 
             // There is a column violation
-            if(tileVal == currVal)
+            if(tileVal == currVal && tiles[i][column] != currentTile)
             {
                 return true;
             }
@@ -106,7 +106,7 @@ public class grid
                 int currVal = tiles[i][j].getValue();
 
                 // There is a subgrid violation
-                if(tileVal == currVal)
+                if(tileVal == currVal && tiles[i][j] != currentTile)
                 {
                     return true;
                 }
@@ -152,7 +152,7 @@ public class grid
         int y = currTile.getY();
 
         // currTile is the last tile in a row
-        if(y == 0)
+        if(y == 8)
         {
             return tiles[x + 1][0];
         }
@@ -179,7 +179,12 @@ public class grid
                 // currTile does not violate sudoku rules
                 if(!violation(currTile))
                 {
-                    currTile = getNextTile(currTile);
+                    // We are not on the last tile
+                    if(filled != 80)
+                    {
+                        currTile = getNextTile(currTile);
+                    }
+
                     filled++;
                 }
             }
@@ -187,6 +192,7 @@ public class grid
             else
             {
                 currTile.replenishAvailableNumbers();
+                currTile.setValue(0);
                 currTile = getPreviousTile(currTile);
                 filled--;
             }
@@ -204,6 +210,8 @@ public class grid
 
             System.out.println();
         }
+
+        System.out.println();
     }
 
     public static void main(String[] args)

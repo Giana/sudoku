@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class tile
 {
@@ -67,10 +68,10 @@ public class tile
         }
         else
         {
-            int min = 0;
-            int max = availableNumbers.size() - 1;
-            int newVal = availableNumbers.get((int) ((Math.random() * (max - min)) + min));
-            availableNumbers.remove(newVal);
+            Random rand = new Random();
+            int index = rand.nextInt(availableNumbers.size());
+            int newVal = availableNumbers.get(index);
+            availableNumbers.remove(index);
             this.value = newVal;
 
             return true;
