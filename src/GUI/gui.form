@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.gui">
+  <grid id="27dc6" binding="parentPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="794" height="400"/>
+    </constraints>
+    <properties>
+      <background color="-503240"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="4b7b8" binding="topMenuPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-1776412"/>
+          <enabled value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="92393" class="javax.swing.JLabel" binding="difficultyLogoImage">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="Images/difficultyLogo.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <hspacer id="5cf7">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="8e8e4" class="javax.swing.JLabel" binding="easyLogoImage">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="Images/easyLogo.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="ab30" class="javax.swing.JLabel" binding="mediumLogoImage">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="Images/mediumLogo.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="b19fa" class="javax.swing.JLabel" binding="hardLogoImage">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="Images/hardLogo.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="382a" binding="bottomMenuPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="South"/>
+        <properties>
+          <background color="-7401724"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <grid id="b79fb" binding="switchPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <background color="-196626"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="5c579" binding="boardPanel" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <background color="-1776412"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="d840" binding="gridPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

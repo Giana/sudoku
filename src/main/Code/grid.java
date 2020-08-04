@@ -1,6 +1,8 @@
+package main.Code;
+
 public class grid
 {
-    int TOTAL_N = 81;
+    static int TOTAL_N = 81;
     static int N = 9;
     static int SUB_N = 3;
 
@@ -114,6 +116,7 @@ public class grid
 
     private boolean violation(tile currentTile)
     {
+        // Return if there is a violation
         return rowViolation(currentTile) || columnViolation(currentTile) || subgridViolation(currentTile);
     }
 
@@ -189,9 +192,9 @@ public class grid
 
     private void printGrid()
     {
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < N; i++)
         {
-            for(int j = 0; j < 9; j++)
+            for(int j = 0; j < N; j++)
             {
                 System.out.print(tiles[i][j].getValue() + " ");
             }
