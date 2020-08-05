@@ -13,13 +13,13 @@ public class gui
     private JPanel parentPanel;
     private JPanel switchPanel;
     private JPanel gamePanel;
-    private JPanel boardPanel;
     private JToolBar gameToolBar;
     private JLabel sudokuLogoImage;
     private JButton easyButton;
     private JButton mediumButton;
     private JButton hardButton;
     private JButton solveButton;
+    private JPanel boardPanel;
     private JPanel gridPanel;
     private JTextField[][] textGrid = new JTextField[N][N];
 
@@ -70,7 +70,9 @@ public class gui
 
         for(int i = 0; i < TOTAL_N; i++)
         {
-            gridPanel.add(new JLabel());
+            gridPanel.add(new JLabel("0"));
         }
+
+        gridPanel.setVisible(true);
     }
 }

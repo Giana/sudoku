@@ -10,8 +10,8 @@ public class tile
     int y;
     int[] subgrid;
     ArrayList<Integer> availableNumbers;
-    private boolean revealed;
-    private boolean correct;
+    private boolean visible;
+    private boolean fixed;
 
     public int getValue() { return this.value; }
 
@@ -29,13 +29,13 @@ public class tile
 
     public void setSubgrid(int[] subgrid) { this.subgrid = subgrid; }
 
-    public boolean getRevealed() { return this.revealed; }
+    public boolean getVisible() { return this.visible; }
 
-    public void setRevealed(boolean revealed) { this.revealed = revealed; }
+    public void setVisible(boolean visible) { this.visible = visible; }
 
-    public boolean getCorrect() { return this.correct; }
+    public boolean getFixed() { return this.fixed; }
 
-    public void setCorrect(boolean correct) { this.correct = correct; }
+    public void setFixed(boolean fixed) { this.fixed = fixed; }
 
     public tile(int x, int y)
     {

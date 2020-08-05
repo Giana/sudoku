@@ -10,23 +10,11 @@ public class grid
     static int SUB_N = 3;
 
     tile[][] tiles;
-    boolean[][] tileVisibility;
     int[] possibleInvisible;
-    boolean revealed;
-    boolean correct;
-
-    public boolean getRevealed() { return this.revealed; }
-
-    public void setRevealed(boolean revealed) { this.revealed = revealed; }
-
-    public boolean getCorrect() { return this.correct; }
-
-    public void setCorrect(boolean correct) { this.correct = correct; }
 
     public grid(int[] possibleInvisible)
     {
         tiles = new tile[N][N];
-        tileVisibility = new boolean[N][N];
         this.possibleInvisible = possibleInvisible;
 
         for(int i = 0; i < N; i++)
@@ -38,9 +26,7 @@ public class grid
         }
 
         fillGrid();
-        generateVisibilityGrid();
-        revealed = false;
-        correct = false;
+        generateVisibility();
     }
 
     public void clearGrid()
@@ -76,7 +62,7 @@ public class grid
         return result;
     }
 
-    public void generateVisibilitySubgrid(int x, int y)
+    public void generateVisibilityPerSubgrid(int x, int y)
     {
         Random rand = new Random();
         int index = rand.nextInt(possibleInvisible.length);   // Random index
@@ -90,13 +76,16 @@ public class grid
             // Iterate over subgrid columns
             for (int j = y; j < SUB_N + y; j++)
             {
-                // Tile visibility true if invisibleNumbers doesn't contain current tile's value
-                tileVisibility[i][j] = !invisibleNumbers.contains(tiles[i][j].getValue());
+                tile currTile = tiles[i][j];
+
+                // Tile visibility/fixed true if invisibleNumbers doesn't contain current tile's value
+                currTile.setVisible(!invisibleNumbers.contains(currTile.getValue()));
+                currTile.setFixed(!invisibleNumbers.contains(currTile.getValue()));
             }
         }
     }
 
-    public void generateVisibilityGrid()
+    public void generateVisibility()
     {
         // Iterate over grid rows
         for(int i = 0; i < N; i += 3)
@@ -104,15 +93,15 @@ public class grid
             // Iterate over grid columns
             for(int j = 0; j < N; j += 3)
             {
-                generateVisibilitySubgrid(i, j);
+                generateVisibilityPerSubgrid(i, j);
             }
         }
     }
 
-    public boolean rowViolation(tile currentTile)
+    public boolean rowViolation(tile currTile)
     {
-        int row = currentTile.getX();
-        int tileVal = currentTile.getValue();
+        int row = currTile.getX();
+        int tileVal = currTile.getValue();
 
         // Iterate over row
         for(int i = 0; i < N; i++)
@@ -120,7 +109,7 @@ public class grid
             int currVal = tiles[row][i].getValue();
 
             // There is a row violation
-            if(tileVal == currVal && tiles[row][i] != currentTile)
+            if(tileVal == currVal && tiles[row][i] != currTile)
             {
                 return true;
             }
@@ -130,10 +119,10 @@ public class grid
         return false;
     }
 
-    public boolean columnViolation(tile currentTile)
+    public boolean columnViolation(tile currTile)
     {
-        int column = currentTile.getY();
-        int tileVal = currentTile.getValue();
+        int column = currTile.getY();
+        int tileVal = currTile.getValue();
 
         // Iterate over column
         for(int i = 0; i < N; i++)
@@ -141,7 +130,7 @@ public class grid
             int currVal = tiles[i][column].getValue();
 
             // There is a column violation
-            if(tileVal == currVal && tiles[i][column] != currentTile)
+            if(tileVal == currVal && tiles[i][column] != currTile)
             {
                 return true;
             }
@@ -151,11 +140,11 @@ public class grid
         return false;
     }
 
-    public boolean subgridViolation(tile currentTile)
+    public boolean subgridViolation(tile currTile)
     {
-        int x = currentTile.getSubgrid()[0];
-        int y = currentTile.getSubgrid()[1];
-        int tileVal = currentTile.getValue();
+        int x = currTile.getSubgrid()[0];
+        int y = currTile.getSubgrid()[1];
+        int tileVal = currTile.getValue();
 
         // Iterate over subgrid rows
         for(int i = x; i < SUB_N + x; i++)
@@ -166,7 +155,7 @@ public class grid
                 int currVal = tiles[i][j].getValue();
 
                 // There is a subgrid violation
-                if(tileVal == currVal && tiles[i][j] != currentTile)
+                if(tileVal == currVal && tiles[i][j] != currTile)
                 {
                     return true;
                 }
@@ -177,10 +166,10 @@ public class grid
         return false;
     }
 
-    private boolean violation(tile currentTile)
+    private boolean violation(tile currTile)
     {
         // Return if there is a violation
-        return rowViolation(currentTile) || columnViolation(currentTile) || subgridViolation(currentTile);
+        return rowViolation(currTile) || columnViolation(currTile) || subgridViolation(currTile);
     }
 
     private tile getPreviousTile(tile currTile)
@@ -253,6 +242,80 @@ public class grid
         }
     }
 
+    public void solveGrid()
+    {
+        int solved = 0;
+        int moves = 0;
+        tile currTile = tiles[0][0];
+
+        // Replenish available numbers for all tiles and set non-fixed tiles to 0
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                tiles[i][j].replenishAvailableNumbers();
+            }
+        }
+
+        // While all tiles have not been solved
+        while(solved != TOTAL_N)
+        {
+            // currTile is fixed (does not need to be "solved")
+            if(currTile.getFixed())
+            {
+                // We are not on the last tile
+                if(solved != TOTAL_N - 1)
+                {
+                    currTile = getNextTile(currTile);
+                }
+
+                solved++;
+                //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                printGridWithInvisibleTiles();
+                moves++;
+                System.out.println(moves);
+            }
+            // currTile is not fixed (needs to be "solved")
+            else
+            {
+                // There is an available number left to try for currTile
+                if(currTile.setRandomValue())
+                {
+                    currTile.setVisible(true);
+
+                    // currTile does not violate sudoku rules
+                    if(!violation(currTile))
+                    {
+                        // We are not on the last tile
+                        if(solved != TOTAL_N - 1)
+                        {
+                            currTile = getNextTile(currTile);
+                        }
+
+                        solved++;
+                    }
+
+                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                    printGridWithInvisibleTiles();
+                    moves++;
+                    System.out.println(moves);
+                }
+                // There is no available number left to try for currTile
+                else
+                {
+                    currTile.replenishAvailableNumbers();
+                    currTile.setVisible(false);
+                    currTile = getPreviousTile(currTile);
+                    solved--;
+                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                    printGridWithInvisibleTiles();
+                    moves++;
+                    System.out.println(moves);
+                }
+            }
+        }
+    }
+
     public void printEntireGrid()
     {
         for(int i = 0; i < N; i++)
@@ -274,7 +337,7 @@ public class grid
         {
             for(int j = 0; j < N; j++)
             {
-                if(tileVisibility[i][j])
+                if(tiles[i][j].getVisible())
                 {
                     System.out.print(tiles[i][j].getValue() + " ");
                 }
@@ -298,5 +361,6 @@ public class grid
 
         testGrid.printEntireGrid();
         testGrid.printGridWithInvisibleTiles();
+        testGrid.solveGrid();
     }
 }
