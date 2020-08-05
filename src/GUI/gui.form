@@ -40,7 +40,9 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <background color="-1776412"/>
                       <floatable value="false"/>
+                      <foreground color="-11179174"/>
                     </properties>
                     <border type="none"/>
                     <children>
@@ -59,25 +61,47 @@
                       <component id="7be87" class="javax.swing.JButton" binding="easyButton">
                         <constraints/>
                         <properties>
-                          <text value="Easy"/>
+                          <background color="-1776412"/>
+                          <borderPainted value="false"/>
+                          <focusPainted value="false"/>
+                          <icon value="Images/easyLogo.png"/>
+                          <opaque value="false"/>
+                          <selected value="false"/>
+                          <text value=""/>
+                          <visible value="true"/>
                         </properties>
                       </component>
                       <component id="d00a5" class="javax.swing.JButton" binding="mediumButton" default-binding="true">
                         <constraints/>
                         <properties>
-                          <text value="Medium"/>
+                          <background color="-1776412"/>
+                          <borderPainted value="false"/>
+                          <focusPainted value="false"/>
+                          <icon value="Images/mediumLogo.png"/>
+                          <opaque value="false"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="86752" class="javax.swing.JButton" binding="hardButton" default-binding="true">
                         <constraints/>
                         <properties>
-                          <text value="Hard"/>
+                          <background color="-1776412"/>
+                          <borderPainted value="false"/>
+                          <focusPainted value="false"/>
+                          <icon value="Images/hardLogo.png"/>
+                          <opaque value="false"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="19f42" class="javax.swing.JButton" binding="solveButton" default-binding="true">
                         <constraints/>
                         <properties>
-                          <text value="Solve"/>
+                          <background color="-1776412"/>
+                          <borderPainted value="false"/>
+                          <focusPainted value="false"/>
+                          <icon value="Images/solveLogo.png"/>
+                          <opaque value="false"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <hspacer id="408c7">
