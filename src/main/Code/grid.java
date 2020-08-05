@@ -1,5 +1,8 @@
 package main.Code;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class grid
 {
     static int TOTAL_N = 81;
@@ -7,6 +10,8 @@ public class grid
     static int SUB_N = 3;
 
     tile[][] tiles;
+    boolean[][] tileVisibility;
+    int[] possibleInvisible;
     boolean revealed;
     boolean correct;
 
@@ -18,9 +23,11 @@ public class grid
 
     public void setCorrect(boolean correct) { this.correct = correct; }
 
-    public grid()
+    public grid(int[] possibleInvisible)
     {
         tiles = new tile[N][N];
+        tileVisibility = new boolean[N][N];
+        this.possibleInvisible = possibleInvisible;
 
         for(int i = 0; i < N; i++)
         {
@@ -31,6 +38,7 @@ public class grid
         }
 
         fillGrid();
+        generateVisibilityGrid();
         revealed = false;
         correct = false;
     }
@@ -42,6 +50,69 @@ public class grid
             for(int j = 0; j < N; j++)
             {
                 tiles[i][j].clearTile();
+            }
+        }
+    }
+
+    public void generateVisibilitySubgrid(int x, int y)
+    {
+
+    }
+
+    // Generates list of numbers to turn invisible of length numInvisible
+    public ArrayList<Integer> generateInvisibleNumbers(int numInvisible)
+    {
+        ArrayList<Integer> possibleNumbers = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+
+        for(int i = 1; i < N + 1; i++)
+        {
+            possibleNumbers.add(i);
+        }
+
+        for(int i = 0; i < numInvisible; i++)
+        {
+            Random rand = new Random();
+            int index = rand.nextInt(possibleNumbers.size());
+            result.add(possibleNumbers.get(index));
+            possibleNumbers.remove(index);
+        }
+
+        return result;
+    }
+
+    public void generateVisibilityGrid()
+    {
+        int index = 0;
+        ArrayList<Integer> invisiblePerSubgrid = new ArrayList<>();
+
+        for(int i = 0; i < N; i++)
+        {
+            Random rand = new Random();
+            int j = rand.nextInt(possibleInvisible.length);
+            invisiblePerSubgrid.add(possibleInvisible[j]);
+        }
+
+        for(int i = 0; i < N; i += 3)
+        {
+            for(int j = 0; j < N; j += 3)
+            {
+                ArrayList<Integer> invisibleNumbers = generateInvisibleNumbers(invisiblePerSubgrid.get(index++));
+
+                for(int k = i; k < SUB_N + i; k++)
+                {
+                    for(int m = j; m < SUB_N + j; m++)
+                    {
+                        if(invisibleNumbers.contains(tiles[k][m].getValue()))
+                        {
+                            tileVisibility[k][m] = false;
+                        }
+                        else
+                        {
+                            tileVisibility[j][m] = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -190,7 +261,7 @@ public class grid
         }
     }
 
-    private void printGrid()
+    public void printEntireGrid()
     {
         for(int i = 0; i < N; i++)
         {
@@ -205,10 +276,35 @@ public class grid
         System.out.println();
     }
 
+    public void printGridWithInvisibleTiles()
+    {
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                if(tileVisibility[i][j])
+                {
+                    System.out.print(tiles[i][j].getValue() + " ");
+                }
+                else
+                {
+                    System.out.print("X" + " ");
+                }
+            }
+
+            System.out.println();
+        }
+
+        System.out.println();
+    }
+
     public static void main(String[] args)
     {
-        grid testGrid = new grid();
+        int[] testInvisible = {4, 5};
 
-        testGrid.printGrid();
+        grid testGrid = new grid(testInvisible);
+
+        testGrid.printEntireGrid();
+        testGrid.printGridWithInvisibleTiles();
     }
 }

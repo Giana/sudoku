@@ -18,6 +18,7 @@ public class gui
     private JLabel easyLogoImage;
     private JLabel mediumLogoImage;
     private JLabel hardLogoImage;
+    private JPanel gamePanel;
     private JPanel boardPanel;
     private JPanel gridPanel;
     private JTextField[][] textGrid = new JTextField[N][N];
@@ -33,7 +34,7 @@ public class gui
         {
             for(int j = 0; j < N; j++)
             {
-                
+                textGrid[i][j] = new JTextField();
             }
         }
     }
