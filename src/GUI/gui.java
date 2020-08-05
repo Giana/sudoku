@@ -11,15 +11,15 @@ public class gui
     static int SUB_N = 3;
 
     private JPanel parentPanel;
-    private JPanel topMenuPanel;
-    private JPanel bottomMenuPanel;
     private JPanel switchPanel;
-    private JLabel difficultyLogoImage;
-    private JLabel easyLogoImage;
-    private JLabel mediumLogoImage;
-    private JLabel hardLogoImage;
     private JPanel gamePanel;
     private JPanel boardPanel;
+    private JToolBar gameToolBar;
+    private JLabel sudokuLogoImage;
+    private JButton easyButton;
+    private JButton mediumButton;
+    private JButton hardButton;
+    private JButton solveButton;
     private JPanel gridPanel;
     private JTextField[][] textGrid = new JTextField[N][N];
 
