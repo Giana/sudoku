@@ -54,11 +54,6 @@ public class grid
         }
     }
 
-    public void generateVisibilitySubgrid(int x, int y)
-    {
-
-    }
-
     // Generates list of numbers to turn invisible of length numInvisible
     public ArrayList<Integer> generateInvisibleNumbers(int numInvisible)
     {
@@ -81,38 +76,35 @@ public class grid
         return result;
     }
 
+    public void generateVisibilitySubgrid(int x, int y)
+    {
+        Random rand = new Random();
+        int index = rand.nextInt(possibleInvisible.length);   // Random index
+        int numInvisible = possibleInvisible[index];          // Number of invisible numbers in this subgrid
+
+        ArrayList<Integer> invisibleNumbers = generateInvisibleNumbers(numInvisible);   // Holds subgrid numbers
+                                                                                        // which will not be visible
+        // Iterate over subgrid rows
+        for(int i = x; i < SUB_N + x; i++)
+        {
+            // Iterate over subgrid columns
+            for (int j = y; j < SUB_N + y; j++)
+            {
+                // Tile visibility true if invisibleNumbers doesn't contain current tile's value
+                tileVisibility[i][j] = !invisibleNumbers.contains(tiles[i][j].getValue());
+            }
+        }
+    }
+
     public void generateVisibilityGrid()
     {
-        int index = 0;
-        ArrayList<Integer> invisiblePerSubgrid = new ArrayList<>();
-
-        for(int i = 0; i < N; i++)
-        {
-            Random rand = new Random();
-            int j = rand.nextInt(possibleInvisible.length);
-            invisiblePerSubgrid.add(possibleInvisible[j]);
-        }
-
+        // Iterate over grid rows
         for(int i = 0; i < N; i += 3)
         {
+            // Iterate over grid columns
             for(int j = 0; j < N; j += 3)
             {
-                ArrayList<Integer> invisibleNumbers = generateInvisibleNumbers(invisiblePerSubgrid.get(index++));
-
-                for(int k = i; k < SUB_N + i; k++)
-                {
-                    for(int m = j; m < SUB_N + j; m++)
-                    {
-                        if(invisibleNumbers.contains(tiles[k][m].getValue()))
-                        {
-                            tileVisibility[k][m] = false;
-                        }
-                        else
-                        {
-                            tileVisibility[j][m] = true;
-                        }
-                    }
-                }
+                generateVisibilitySubgrid(i, j);
             }
         }
     }
