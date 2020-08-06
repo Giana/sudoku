@@ -12,6 +12,10 @@ public class grid
     tile[][] tiles;
     int[] possibleInvisible;
 
+    public tile[][] getTiles() { return this.tiles; }
+
+    public void setTiles(tile[][] tiles) { this.tiles = tiles; }
+
     public grid(int[] possibleInvisible)
     {
         tiles = new tile[N][N];

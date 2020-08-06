@@ -9,20 +9,25 @@ public class game
     static int[] hardRange = {6, 7};     // Range of invisible numbers per subgrid in hard mode
 
     private int mode;   // Game mode (0 - 2)
+    grid playerBoard;   // Player's sudoku board
+
+    public grid getPlayerBoard() { return this.playerBoard; }
+
+    public void setPlayerBoard(grid playerBoard) { this.playerBoard = playerBoard; }
 
     public game(int mode)
     {
         if(mode == 0)
         {
-            grid playerGrid = new grid(easyRange);
+            grid playerBoard = new grid(easyRange);
         }
         else if(mode == 1)
         {
-            grid playerGrid = new grid(mediumRange);
+            grid playerBoard = new grid(mediumRange);
         }
         else
         {
-            grid playerGrid = new grid(hardRange);
+            grid playerBoard = new grid(hardRange);
         }
     }
 }

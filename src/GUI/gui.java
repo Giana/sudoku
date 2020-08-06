@@ -3,6 +3,9 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import main.Code.game;
 
 public class gui
 {
@@ -23,20 +26,39 @@ public class gui
     private JPanel gridPanel;
     private JTextField[][] textGrid = new JTextField[N][N];
 
+    game currentGame;
+
     public gui()
     {
-        initializeGridGUI();
-    }
+        currentGame = new game(0);
+        createUIComponents();
 
-    private void initializeGridGUI()
-    {
-        for(int i = 0; i < N; i++)
+        easyButton.addActionListener(new ActionListener()
         {
-            for(int j = 0; j < N; j++)
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                textGrid[i][j] = new JTextField();
+                currentGame = new game(0);
             }
-        }
+        });
+
+        mediumButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                currentGame = new game(1);
+            }
+        });
+
+        hardButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                currentGame = new game(2);
+            }
+        });
     }
 
     public static void main(String[] args)
@@ -51,8 +73,9 @@ public class gui
 
     private void createUIComponents()
     {
-        /*textGrid = new JTextField[N][N];
         Border tileBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        Font boardFont = new Font("Monospaced", Font.BOLD, 20);
+        gridPanel.setLayout(new GridLayout(N, N));
 
         for(int i = 0; i < N; i++)
         {
@@ -60,19 +83,17 @@ public class gui
             {
                 textGrid[i][j] = new JTextField();
                 textGrid[i][j].setBorder(tileBorder);
+                textGrid[i][j].setBackground(Color.decode("#E4E4E4"));
+                textGrid[i][j].setOpaque(true);
+                textGrid[i][j].setFont(boardFont);
+                textGrid[i][j].setHorizontalAlignment(JTextField.CENTER);
+
+                if(currentGame.getPlayerBoard().getTiles()[i][j].getFixed())
+                {
+                    textGrid[i][j].setText(Integer.toString(currentGame.getPlayerBoard().getTiles()[i][j].getValue()));
+                }
+                gridPanel.add(textGrid[i][j]);
             }
         }
-
-        boardPanel.add(textGrid);*/
-
-        Border tileBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-        gridPanel.setLayout(new GridLayout(N, N));
-
-        for(int i = 0; i < TOTAL_N; i++)
-        {
-            gridPanel.add(new JLabel("0"));
-        }
-
-        gridPanel.setVisible(true);
     }
 }
