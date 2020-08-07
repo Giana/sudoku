@@ -16,6 +16,19 @@ public class grid
 
     public void setTiles(tile[][] tiles) { this.tiles = tiles; }
 
+    public grid()
+    {
+        tiles = new tile[N][N];
+
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                tiles[i][j] = new tile(i, j);
+            }
+        }
+    }
+
     public grid(int[] possibleInvisible)
     {
         tiles = new tile[N][N];

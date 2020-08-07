@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import main.Code.grid;
+import main.Code.player;
 
 public class gui
 {
@@ -16,19 +17,27 @@ public class gui
     private JPanel parentPanel;
     private JPanel switchPanel;
     private JPanel gamePanel;
-    private JToolBar gameToolBar;
     private JButton easyButton;
     private JButton mediumButton;
     private JButton hardButton;
-    private JButton solveButton;
     private JPanel boardPanel;
     private JPanel gridPanel;
-    private JButton validateButton;
+    private JPanel correctPanel;
+    private JToolBar gameToolBar;
     private JButton sudokuButton;
+    private JButton solveButton;
+    private JButton validateButton;
+    private JLabel correctLogoImage;
+    private JPanel incorrectPanel;
+    private JLabel incorrectLogoImage;
+    private JPanel choicesPanel;
+    private JButton continueButton;
+    private JButton forfeitButton;
 
     private JPanel[][] panelGrid = new JPanel[SUB_N][SUB_N];
     private JTextField[][] textGrid = new JTextField[N][N];
     private grid currentGrid;
+    private player currentPlayer;
 
     public gui()
     {
@@ -40,6 +49,7 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 currentGrid = new grid(new int[]{4, 5});
+                currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
                 fillBoardGUI();
             }
@@ -51,6 +61,7 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 currentGrid = new grid(new int[]{5, 6});
+                currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
                 fillBoardGUI();
             }
@@ -62,31 +73,90 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 currentGrid = new grid(new int[]{6, 7});
+                currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
                 fillBoardGUI();
+            }
+        });
+
+        solveButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+
+            }
+        });
+
+        validateButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                updatePlayerGridFromGUI();
+                currentPlayer.getPlayerGrid().printEntireGrid();
+
+                // Board is valid
+                if(currentPlayer.determineVictory())
+                {
+                    displayCorrectPanel();
+                }
+                // Board is invalid
+                else
+                {
+                    displayIncorrectPanel();
+                }
+            }
+        });
+
+        forfeitButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                clearBoardGUI();
+                displayGamePanel();
+            }
+        });
+
+        continueButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayGamePanel();
             }
         });
     }
 
     private void clearBoardGUI()
     {
-
-    }
-
-    private void fillBoardGUI()
-    {
-        // Set up textGrid
         for(int i = 0; i < N; i++)
         {
             for(int j = 0; j < N; j++)
             {
                 textGrid[i][j].setText("");
                 textGrid[i][j].setBackground(Color.decode("#E4E4E4"));
+                textGrid[i][j].setEditable(false);
+            }
+        }
+    }
+
+    private void fillBoardGUI()
+    {
+        clearBoardGUI();
+
+        // Set up textGrid
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
 
                 if(currentGrid.getTiles()[i][j].getFixed())
                 {
                     textGrid[i][j].setText(Integer.toString(currentGrid.getTiles()[i][j].getValue()));
                     textGrid[i][j].setBackground(Color.decode("#BABABA"));
+                    textGrid[i][j].setEditable(false);
                 }
                 else
                 {
@@ -94,6 +164,8 @@ public class gui
                 }
             }
         }
+
+        displayGamePanel();
     }
 
     private void initBoardGUI()
@@ -155,6 +227,58 @@ public class gui
             y = 0;
             x += 3;
         }
+    }
+
+    public void updatePlayerGridFromGUI()
+    {
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                String currentString = textGrid[i][j].getText();
+
+                // Current tile is a player entry
+                if(!currentGrid.getTiles()[i][j].getFixed())
+                {
+                    // Current tile is a valid player entry
+                    if(currentString.length() == 1 &&
+                            (Character.getNumericValue(currentString.charAt(0)) >= 1 &&
+                                    Character.getNumericValue(currentString.charAt(0)) <= 9))
+                    {
+                        currentPlayer.getPlayerGrid().getTiles()[i][j].setValue(Integer.parseInt(currentString));
+                    }
+                    // Current tile is an invalid player entry
+                    else
+                    {
+                        currentPlayer.getPlayerGrid().getTiles()[i][j].setValue(0);
+                    }
+                }
+            }
+        }
+    }
+
+    public void displayCorrectPanel()
+    {
+        switchPanel.removeAll();
+        switchPanel.add(correctPanel);
+        switchPanel.repaint();
+        switchPanel.revalidate();
+    }
+
+    public void displayIncorrectPanel()
+    {
+        switchPanel.removeAll();
+        switchPanel.add(incorrectPanel);
+        switchPanel.repaint();
+        switchPanel.revalidate();
+    }
+
+    public void displayGamePanel()
+    {
+        switchPanel.removeAll();
+        switchPanel.add(gamePanel);
+        switchPanel.repaint();
+        switchPanel.revalidate();
     }
 
     public static void main(String[] args)

@@ -21,97 +21,10 @@
               <card name="Card1"/>
             </constraints>
             <properties>
-              <background color="-2631721"/>
+              <background color="-1776412"/>
             </properties>
             <border type="none"/>
             <children>
-              <toolbar id="d8953" binding="gameToolBar">
-                <constraints border-constraint="North"/>
-                <properties>
-                  <background color="-1776412"/>
-                  <floatable value="false"/>
-                  <foreground color="-11179174"/>
-                </properties>
-                <border type="none"/>
-                <children>
-                  <component id="b2878" class="javax.swing.JButton" binding="sudokuButton">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/sudokuLogo.png"/>
-                      <opaque value="false"/>
-                      <selected value="false"/>
-                      <text value=""/>
-                      <visible value="true"/>
-                    </properties>
-                  </component>
-                  <hspacer id="18550">
-                    <constraints/>
-                  </hspacer>
-                  <component id="4bfa6" class="javax.swing.JButton" binding="easyButton">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/easyLogo.png"/>
-                      <opaque value="false"/>
-                      <selected value="false"/>
-                      <text value=""/>
-                      <visible value="true"/>
-                    </properties>
-                  </component>
-                  <component id="bb6d2" class="javax.swing.JButton" binding="mediumButton" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/mediumLogo.png"/>
-                      <opaque value="false"/>
-                      <text value=""/>
-                    </properties>
-                  </component>
-                  <component id="2e4ed" class="javax.swing.JButton" binding="hardButton" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/hardLogo.png"/>
-                      <opaque value="false"/>
-                      <text value=""/>
-                    </properties>
-                  </component>
-                  <component id="8af10" class="javax.swing.JButton" binding="solveButton" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/solveLogo.png"/>
-                      <opaque value="false"/>
-                      <text value=""/>
-                    </properties>
-                  </component>
-                  <component id="c2af8" class="javax.swing.JButton" binding="validateButton">
-                    <constraints/>
-                    <properties>
-                      <background color="-1776412"/>
-                      <borderPainted value="false"/>
-                      <focusPainted value="false"/>
-                      <icon value="Images/validateLogo.png"/>
-                      <opaque value="false"/>
-                      <text value=""/>
-                    </properties>
-                  </component>
-                  <hspacer id="c231">
-                    <constraints/>
-                  </hspacer>
-                </children>
-              </toolbar>
               <grid id="d370d" binding="boardPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="Center"/>
                 <properties>
@@ -132,8 +45,168 @@
               </grid>
             </children>
           </grid>
+          <grid id="bd3f" binding="correctPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="Card2"/>
+            </constraints>
+            <properties>
+              <background color="-1776412"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="7596e" class="javax.swing.JLabel" binding="correctLogoImage">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <icon value="Images/correctLogo.png"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="64714" binding="incorrectPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="Card3"/>
+            </constraints>
+            <properties>
+              <background color="-1776412"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="24ca2" class="javax.swing.JLabel" binding="incorrectLogoImage">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <icon value="Images/incorrectLogo.png"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <grid id="e523c" binding="choicesPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="South"/>
+                <properties>
+                  <background color="-1776412"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="30ee7" class="javax.swing.JButton" binding="continueButton">
+                    <constraints border-constraint="East"/>
+                    <properties>
+                      <background color="-1776412"/>
+                      <borderPainted value="false"/>
+                      <focusPainted value="false"/>
+                      <icon value="Images/continueLogo.png"/>
+                      <opaque value="false"/>
+                      <selected value="false"/>
+                      <text value=""/>
+                      <visible value="true"/>
+                    </properties>
+                  </component>
+                  <component id="bfa0d" class="javax.swing.JButton" binding="forfeitButton">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <background color="-1776412"/>
+                      <borderPainted value="false"/>
+                      <focusPainted value="false"/>
+                      <icon value="Images/forfeitLogo.png"/>
+                      <opaque value="false"/>
+                      <selected value="false"/>
+                      <text value=""/>
+                      <visible value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
         </children>
       </grid>
+      <toolbar id="dd55f" binding="gameToolBar">
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-1776412"/>
+          <floatable value="false"/>
+          <foreground color="-11179174"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="15184" class="javax.swing.JButton" binding="sudokuButton">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/sudokuLogo.png"/>
+              <opaque value="false"/>
+              <selected value="false"/>
+              <text value=""/>
+              <visible value="true"/>
+            </properties>
+          </component>
+          <hspacer id="2b1fa">
+            <constraints/>
+          </hspacer>
+          <component id="63511" class="javax.swing.JButton" binding="easyButton">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/easyLogo.png"/>
+              <opaque value="false"/>
+              <selected value="false"/>
+              <text value=""/>
+              <visible value="true"/>
+            </properties>
+          </component>
+          <component id="44111" class="javax.swing.JButton" binding="mediumButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/mediumLogo.png"/>
+              <opaque value="false"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="22c81" class="javax.swing.JButton" binding="hardButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/hardLogo.png"/>
+              <opaque value="false"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="d5e" class="javax.swing.JButton" binding="solveButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/solveLogo.png"/>
+              <opaque value="false"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="55480" class="javax.swing.JButton" binding="validateButton">
+            <constraints/>
+            <properties>
+              <background color="-1776412"/>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <icon value="Images/validateLogo.png"/>
+              <opaque value="false"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <hspacer id="aa7bc">
+            <constraints/>
+          </hspacer>
+        </children>
+      </toolbar>
     </children>
   </grid>
 </form>
