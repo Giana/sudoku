@@ -81,10 +81,12 @@ public class gui
             for(int j = 0; j < N; j++)
             {
                 textGrid[i][j].setText("");
+                textGrid[i][j].setBackground(Color.decode("#E4E4E4"));
 
                 if(currentGrid.getTiles()[i][j].getFixed())
                 {
                     textGrid[i][j].setText(Integer.toString(currentGrid.getTiles()[i][j].getValue()));
+                    textGrid[i][j].setBackground(Color.decode("#BABABA"));
                 }
                 else
                 {
