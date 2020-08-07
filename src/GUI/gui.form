@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.gui">
   <grid id="27dc6" binding="parentPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="794" height="400"/>
+      <xy x="20" y="20" width="818" height="400"/>
     </constraints>
     <properties>
       <background color="-503240"/>
@@ -34,16 +34,20 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="2ac7b" class="javax.swing.JLabel" binding="sudokuLogoImage">
+                  <component id="b2878" class="javax.swing.JButton" binding="sudokuButton">
                     <constraints/>
                     <properties>
-                      <background color="-13885375"/>
-                      <foreground color="-16750977"/>
+                      <background color="-1776412"/>
+                      <borderPainted value="false"/>
+                      <focusPainted value="false"/>
                       <icon value="Images/sudokuLogo.png"/>
+                      <opaque value="false"/>
+                      <selected value="false"/>
                       <text value=""/>
+                      <visible value="true"/>
                     </properties>
                   </component>
-                  <hspacer id="c3bc">
+                  <hspacer id="18550">
                     <constraints/>
                   </hspacer>
                   <component id="4bfa6" class="javax.swing.JButton" binding="easyButton">
@@ -88,6 +92,17 @@
                       <borderPainted value="false"/>
                       <focusPainted value="false"/>
                       <icon value="Images/solveLogo.png"/>
+                      <opaque value="false"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="c2af8" class="javax.swing.JButton" binding="validateButton">
+                    <constraints/>
+                    <properties>
+                      <background color="-1776412"/>
+                      <borderPainted value="false"/>
+                      <focusPainted value="false"/>
+                      <icon value="Images/validateLogo.png"/>
                       <opaque value="false"/>
                       <text value=""/>
                     </properties>

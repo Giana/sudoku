@@ -15,6 +15,8 @@ public class game
 
     public void setPlayerBoard(grid playerBoard) { this.playerBoard = playerBoard; }
 
+    public game() { }
+
     public game(int mode)
     {
         if(mode == 0)
