@@ -6,12 +6,12 @@ import java.util.Random;
 public class tile
 {
     private int value;
-    int x;
-    int y;
-    int[] subgrid;
-    ArrayList<Integer> availableNumbers;
+    private int x;
+    private int y;
     private boolean visible;
     private boolean fixed;
+    int[] subgrid;
+    ArrayList<Integer> availableNumbers;
 
     public int getValue() { return this.value; }
 
@@ -42,9 +42,22 @@ public class tile
         this.value = 0;
         this.x = x;
         this.y = y;
-        subgrid = calculateSubgrid(x, y);
+        this.visible = false;
+        this.fixed = false;
+        this.subgrid = calculateSubgrid(x, y);
         this.availableNumbers = new ArrayList<>();
         replenishAvailableNumbers();
+    }
+
+    public tile(tile copyTile)
+    {
+        this.value = copyTile.value;
+        this.x = copyTile.x;
+        this.y = copyTile.y;
+        this.visible = copyTile.visible;
+        this.fixed = copyTile.fixed;
+        this.subgrid = calculateSubgrid(x, y);
+        this.availableNumbers = copyTile.availableNumbers;
     }
 
     public void clearTile()

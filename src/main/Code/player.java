@@ -20,13 +20,12 @@ public class player
         {
             for(int j = 0; j < N; j++)
             {
-                if(actualGrid.getTiles()[i][j].getFixed())
+                playerGrid.getTiles()[i][j] = new tile(actualGrid.getTiles()[i][j]);
+
+                // Current tile is not fixed
+                if(!actualGrid.getTiles()[i][j].getFixed())
                 {
-                    playerGrid.getTiles()[i][j].setValue(actualGrid.getTiles()[i][j].getValue());
-                }
-                else
-                {
-                    playerGrid.getTiles()[i][j].setValue(0);
+                    playerGrid.getTiles()[i][j].clearTile();
                 }
             }
         }

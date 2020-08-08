@@ -52,9 +52,9 @@ public class gui
             {
                 currentGrid = new grid(new int[]{4, 5});
                 currentPlayer = new player(currentGrid);
-                currentGrid.printEntireGrid();
-                clearBoardGUI();
-                fillBoardGUI();
+                currentGrid.print();
+                clearGridGUI();
+                fillGridGUI();
             }
         });
 
@@ -65,9 +65,9 @@ public class gui
             {
                 currentGrid = new grid(new int[]{5, 6});
                 currentPlayer = new player(currentGrid);
-                currentGrid.printEntireGrid();
-                clearBoardGUI();
-                fillBoardGUI();
+                currentGrid.print();
+                clearGridGUI();
+                fillGridGUI();
             }
         });
 
@@ -78,9 +78,9 @@ public class gui
             {
                 currentGrid = new grid(new int[]{6, 7});
                 currentPlayer = new player(currentGrid);
-                currentGrid.printEntireGrid();
-                clearBoardGUI();
-                fillBoardGUI();
+                currentGrid.print();
+                clearGridGUI();
+                fillGridGUI();
             }
         });
 
@@ -89,8 +89,9 @@ public class gui
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                currentGrid.replenishGrid();
-                fillBoardGUI();
+                currentPlayer.getPlayerGrid().replenish();
+                clearGridGUI();
+                fillGridGUI();
                 setUpSolver();
                 solver.start();
             }
@@ -102,7 +103,7 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 updatePlayerGridFromGUI();
-                currentPlayer.getPlayerGrid().printEntireGrid();
+                currentPlayer.getPlayerGrid().print();
 
                 // Board is valid
                 if(currentPlayer.determineVictory())
@@ -122,7 +123,7 @@ public class gui
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                clearBoardGUI();
+                clearGridGUI();
                 displayGamePanel();
             }
         });
@@ -137,7 +138,7 @@ public class gui
         });
     }
 
-    private void clearBoardGUI()
+    private void clearGridGUI()
     {
         for(int i = 0; i < N; i++)
         {
@@ -156,12 +157,21 @@ public class gui
         {
             for(int j = 0; j < N; j++)
             {
-                textGrid[i][j].setText(Integer.toString(currentGrid.getTiles()[i][j].getValue()));
+                // Current tile is visible
+                if(currentPlayer.getPlayerGrid().getTiles()[i][j].getVisible())
+                {
+                    textGrid[i][j].setText(Integer.toString(currentPlayer.getPlayerGrid().getTiles()[i][j].getValue()));
+                }
+                // Current tile is not visible
+                else
+                {
+                    textGrid[i][j].setText("");
+                }
             }
         }
     }
 
-    private void fillBoardGUI()
+    private void fillGridGUI()
     {
         // Set up textGrid
         for(int i = 0; i < N; i++)
@@ -274,6 +284,49 @@ public class gui
         }
     }
 
+    public void setUpSolver()
+    {
+        // Thread for solver
+        solver = new Thread(() ->
+        {
+            grid playerGrid = currentPlayer.getPlayerGrid();
+
+            // Sleep for .2 second before starting solver
+            try
+            {
+                Thread.sleep(200);
+            }
+            catch(InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+            refreshBoardGUI();
+            //updatePlayerGridFromGUI();
+            tile currentTile = playerGrid.getTiles()[0][0];
+
+            // While current board hasn't been solved
+            while(!playerGrid.getSolved())
+            {
+                currentTile = playerGrid.solveOneStep(currentTile);
+                refreshBoardGUI();
+                //updatePlayerGridFromGUI();
+
+                // Sleep for .05 seconds before continuing
+                try
+                {
+                    Thread.sleep(50);
+                }
+                catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            solver.interrupt();
+        });
+    }
+
     public void displayCorrectPanel()
     {
         switchPanel.removeAll();
@@ -296,45 +349,6 @@ public class gui
         switchPanel.add(gamePanel);
         switchPanel.repaint();
         switchPanel.revalidate();
-    }
-
-    public void setUpSolver()
-    {
-        // Thread for solver
-        solver = new Thread(() ->
-        {
-            // Sleep for .5 seconds before starting solver
-            try
-            {
-                Thread.sleep(500);
-            }
-            catch(InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-
-            refreshBoardGUI();
-            tile currentTile = currentGrid.getTiles()[0][0];
-
-            // While current board hasn't been solved
-            while(!currentGrid.getSolved())
-            {
-                currentTile = currentGrid.solveOneStep(currentTile);
-                refreshBoardGUI();
-
-                // Sleep for .15 seconds before continuing
-                try
-                {
-                    Thread.sleep(150);
-                }
-                catch(InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            solver.interrupt();
-        });
     }
 
     public static void main(String[] args)

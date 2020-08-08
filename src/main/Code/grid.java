@@ -47,11 +47,11 @@ public class grid
             }
         }
 
-        fillGrid();
+        fill();
         generateVisibility();
     }
 
-    public void clearGrid()
+    public void clear()
     {
         for(int i = 0; i < N; i++)
         {
@@ -199,11 +199,6 @@ public class grid
         int x = currTile.getX();
         int y = currTile.getY();
 
-        if(currTile == null)
-        {
-            return null;
-        }
-
         // currTile is the first tile in a row
         if(y == 0)
         {
@@ -221,11 +216,6 @@ public class grid
         int x = currTile.getX();
         int y = currTile.getY();
 
-        if(currTile == null)
-        {
-            return null;
-        }
-
         // currTile is the last tile in a row
         if(y == 8)
         {
@@ -238,9 +228,9 @@ public class grid
         }
     }
 
-    private void fillGrid()
+    private void fill()
     {
-        clearGrid();
+        clear();
 
         int filled = 0;
         tile currTile = tiles[0][0];
@@ -275,7 +265,7 @@ public class grid
     }
 
     // Replenish available numbers for all tiles
-    public void replenishGrid()
+    public void replenish()
     {
         for(int i = 0; i < N; i++)
         {
@@ -289,13 +279,13 @@ public class grid
     public tile solveOneStep(tile currTile)
     {
         // While all tiles have not been solved
-        if(currTile != null)
+         if(currTile != null)
         {
             // currTile is fixed (does not need to be "solved")
             if(currTile.getFixed())
             {
+                currTile.setVisible(true);   // TODO: probably redundant
                 return getNextTile(currTile);
-                //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
             }
             // currTile is not fixed (needs to be "solved")
             else
@@ -303,6 +293,8 @@ public class grid
                 // There is an available number left to try for currTile
                 if(currTile.setRandomValue())
                 {
+                    currTile.setVisible(true);
+
                     // currTile does not violate sudoku rules
                     if(!violation(currTile))
                     {
@@ -313,15 +305,22 @@ public class grid
                     {
                         return currTile;
                     }
-
-                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
                 }
                 // There is no available number left to try for currTile
                 else
                 {
                     currTile.replenishAvailableNumbers();
-                    return getPreviousTile(currTile);
-                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                    currTile.clearTile();
+                    currTile.setVisible(false);
+                    currTile = getPreviousTile(currTile);
+
+                    // Keep moving back while currTile is fixed
+                    while(currTile.getFixed())
+                    {
+                        currTile = getPreviousTile(currTile);
+                    }
+
+                    return currTile;
                 }
             }
         }
@@ -333,12 +332,12 @@ public class grid
         }
     }
 
-    public void solveGrid()
+    public void solve()
     {
         int solved = 0;
         tile currTile = tiles[0][0];
 
-        replenishGrid();
+        replenish();
 
         // While all tiles have not been solved
         while(solved != TOTAL_N)
@@ -390,7 +389,21 @@ public class grid
         }
     }
 
-    public void printEntireGrid()
+    public void refreshForSolver()
+    {
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                if(!tiles[i][j].getFixed())
+                {
+                    tiles[i][j].clearTile();
+                }
+            }
+        }
+    }
+
+    public void print()
     {
         for(int i = 0; i < N; i++)
         {
@@ -405,7 +418,7 @@ public class grid
         System.out.println();
     }
 
-    public void printGridWithInvisibleTiles()
+    public void printWithInvisibleTiles()
     {
         for(int i = 0; i < N; i++)
         {
@@ -433,8 +446,8 @@ public class grid
 
         grid testGrid = new grid(testInvisible);
 
-        testGrid.printEntireGrid();
-        testGrid.printGridWithInvisibleTiles();
-        testGrid.solveGrid();
+        testGrid.print();
+        testGrid.printWithInvisibleTiles();
+        testGrid.solve();
     }
 }
