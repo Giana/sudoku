@@ -10,11 +10,16 @@ public class grid
     static int SUB_N = 3;
 
     tile[][] tiles;
+    boolean solved;
     int[] possibleInvisible;
 
     public tile[][] getTiles() { return this.tiles; }
 
     public void setTiles(tile[][] tiles) { this.tiles = tiles; }
+
+    public boolean getSolved() { return this.solved; }
+
+    public void setSolved(boolean solved) { this.solved = solved; }
 
     public grid()
     {
@@ -194,6 +199,11 @@ public class grid
         int x = currTile.getX();
         int y = currTile.getY();
 
+        if(currTile == null)
+        {
+            return null;
+        }
+
         // currTile is the first tile in a row
         if(y == 0)
         {
@@ -210,6 +220,11 @@ public class grid
     {
         int x = currTile.getX();
         int y = currTile.getY();
+
+        if(currTile == null)
+        {
+            return null;
+        }
 
         // currTile is the last tile in a row
         if(y == 8)
@@ -259,13 +274,9 @@ public class grid
         }
     }
 
-    public void solveGrid()
+    // Replenish available numbers for all tiles
+    public void replenishGrid()
     {
-        int solved = 0;
-        int moves = 0;
-        tile currTile = tiles[0][0];
-
-        // Replenish available numbers for all tiles and set non-fixed tiles to 0
         for(int i = 0; i < N; i++)
         {
             for(int j = 0; j < N; j++)
@@ -273,6 +284,61 @@ public class grid
                 tiles[i][j].replenishAvailableNumbers();
             }
         }
+    }
+
+    public tile solveOneStep(tile currTile)
+    {
+        // While all tiles have not been solved
+        if(currTile != null)
+        {
+            // currTile is fixed (does not need to be "solved")
+            if(currTile.getFixed())
+            {
+                return getNextTile(currTile);
+                //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+            }
+            // currTile is not fixed (needs to be "solved")
+            else
+            {
+                // There is an available number left to try for currTile
+                if(currTile.setRandomValue())
+                {
+                    // currTile does not violate sudoku rules
+                    if(!violation(currTile))
+                    {
+                        return getNextTile(currTile);
+                    }
+                    // currTile violates sudoku rules
+                    else
+                    {
+                        return currTile;
+                    }
+
+                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                }
+                // There is no available number left to try for currTile
+                else
+                {
+                    currTile.replenishAvailableNumbers();
+                    return getPreviousTile(currTile);
+                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
+                }
+            }
+        }
+        // All tiles have been solved
+        else
+        {
+            solved = true;
+            return null;
+        }
+    }
+
+    public void solveGrid()
+    {
+        int solved = 0;
+        tile currTile = tiles[0][0];
+
+        replenishGrid();
 
         // While all tiles have not been solved
         while(solved != TOTAL_N)
@@ -288,9 +354,6 @@ public class grid
 
                 solved++;
                 //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-                printGridWithInvisibleTiles();
-                moves++;
-                System.out.println(moves);
             }
             // currTile is not fixed (needs to be "solved")
             else
@@ -313,9 +376,6 @@ public class grid
                     }
 
                     //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-                    printGridWithInvisibleTiles();
-                    moves++;
-                    System.out.println(moves);
                 }
                 // There is no available number left to try for currTile
                 else
@@ -325,9 +385,6 @@ public class grid
                     currTile = getPreviousTile(currTile);
                     solved--;
                     //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-                    printGridWithInvisibleTiles();
-                    moves++;
-                    System.out.println(moves);
                 }
             }
         }

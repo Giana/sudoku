@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import main.Code.tile;
 import main.Code.grid;
 import main.Code.player;
 
@@ -38,6 +39,7 @@ public class gui
     private JTextField[][] textGrid = new JTextField[N][N];
     private grid currentGrid;
     private player currentPlayer;
+    private Thread solver;
 
     public gui()
     {
@@ -51,6 +53,7 @@ public class gui
                 currentGrid = new grid(new int[]{4, 5});
                 currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
+                clearBoardGUI();
                 fillBoardGUI();
             }
         });
@@ -63,6 +66,7 @@ public class gui
                 currentGrid = new grid(new int[]{5, 6});
                 currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
+                clearBoardGUI();
                 fillBoardGUI();
             }
         });
@@ -75,6 +79,7 @@ public class gui
                 currentGrid = new grid(new int[]{6, 7});
                 currentPlayer = new player(currentGrid);
                 currentGrid.printEntireGrid();
+                clearBoardGUI();
                 fillBoardGUI();
             }
         });
@@ -84,7 +89,10 @@ public class gui
             @Override
             public void actionPerformed(ActionEvent e)
             {
-
+                currentGrid.replenishGrid();
+                fillBoardGUI();
+                setUpSolver();
+                solver.start();
             }
         });
 
@@ -142,10 +150,19 @@ public class gui
         }
     }
 
+    private void refreshBoardGUI()
+    {
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                textGrid[i][j].setText(Integer.toString(currentGrid.getTiles()[i][j].getValue()));
+            }
+        }
+    }
+
     private void fillBoardGUI()
     {
-        clearBoardGUI();
-
         // Set up textGrid
         for(int i = 0; i < N; i++)
         {
@@ -279,6 +296,45 @@ public class gui
         switchPanel.add(gamePanel);
         switchPanel.repaint();
         switchPanel.revalidate();
+    }
+
+    public void setUpSolver()
+    {
+        // Thread for solver
+        solver = new Thread(() ->
+        {
+            // Sleep for .5 seconds before starting solver
+            try
+            {
+                Thread.sleep(500);
+            }
+            catch(InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+            refreshBoardGUI();
+            tile currentTile = currentGrid.getTiles()[0][0];
+
+            // While current board hasn't been solved
+            while(!currentGrid.getSolved())
+            {
+                currentTile = currentGrid.solveOneStep(currentTile);
+                refreshBoardGUI();
+
+                // Sleep for .15 seconds before continuing
+                try
+                {
+                    Thread.sleep(150);
+                }
+                catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            solver.interrupt();
+        });
     }
 
     public static void main(String[] args)
