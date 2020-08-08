@@ -188,7 +188,7 @@ public class grid
         return false;
     }
 
-    private boolean violation(tile currTile)
+    public boolean violation(tile currTile)
     {
         // Return if there is a violation
         return rowViolation(currTile) || columnViolation(currTile) || subgridViolation(currTile);
@@ -219,6 +219,13 @@ public class grid
         // currTile is the last tile in a row
         if(y == 8)
         {
+            // Next tile doesn't exist
+            if(x + 1 == N)
+            {
+                return null;
+            }
+
+            // Next tile exists
             return tiles[x + 1][0];
         }
         // currTile is not the last tile in a row

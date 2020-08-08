@@ -291,18 +291,7 @@ public class gui
         {
             grid playerGrid = currentPlayer.getPlayerGrid();
 
-            // Sleep for .2 second before starting solver
-            try
-            {
-                Thread.sleep(200);
-            }
-            catch(InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-
             refreshBoardGUI();
-            //updatePlayerGridFromGUI();
             tile currentTile = playerGrid.getTiles()[0][0];
 
             // While current board hasn't been solved
@@ -310,17 +299,6 @@ public class gui
             {
                 currentTile = playerGrid.solveOneStep(currentTile);
                 refreshBoardGUI();
-                //updatePlayerGridFromGUI();
-
-                // Sleep for .05 seconds before continuing
-                try
-                {
-                    Thread.sleep(50);
-                }
-                catch(InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
             }
 
             solver.interrupt();

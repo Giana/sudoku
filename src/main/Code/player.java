@@ -37,7 +37,7 @@ public class player
         {
             for(int j = 0; j < N; j++)
             {
-                if(playerGrid.getTiles()[i][j].getValue() != actualGrid.getTiles()[i][j].getValue())
+                if(playerGrid.violation(playerGrid.getTiles()[i][j]))
                 {
                     return false;
                 }
