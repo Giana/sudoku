@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.gui">
   <grid id="27dc6" binding="parentPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="818" height="400"/>
+      <xy x="20" y="20" width="818" height="427"/>
     </constraints>
     <properties>
       <background color="-503240"/>
@@ -116,6 +116,49 @@
                   </component>
                 </children>
               </grid>
+            </children>
+          </grid>
+          <grid id="318ec" binding="creditsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Card4"/>
+            </constraints>
+            <properties>
+              <background color="-1776412"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="e58cb" class="javax.swing.JTextPane" binding="creditsTextPane1">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-1776412"/>
+                  <font name="Calibri" size="22" style="0"/>
+                  <foreground color="-13729386"/>
+                  <text value="My name is Giana, and I created this game from July 2020 to August 2020. The code was written by me in Java, and the GUI was done using Swing and IntelliJ GUI Designer.&#10;&#10;Email: Giana@giana.dev&#10;Github: github.com/G-i-a-n-a&#10;Website: Giana.dev"/>
+                </properties>
+              </component>
+              <vspacer id="22254">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="a9382" class="javax.swing.JTextPane" binding="creditsTextPane2">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-1776412"/>
+                  <font name="Calibri" size="22" style="0"/>
+                  <foreground color="-12218463"/>
+                  <text value="Logo Credits:&#10;LogoMakr - &quot;Created my free logo at LogoMakr.com&quot;"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

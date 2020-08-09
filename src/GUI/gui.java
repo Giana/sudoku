@@ -34,6 +34,9 @@ public class gui
     private JPanel choicesPanel;
     private JButton continueButton;
     private JButton forfeitButton;
+    private JPanel creditsPanel;
+    private JTextPane creditsTextPane1;
+    private JTextPane creditsTextPane2;
 
     private JPanel[][] panelGrid = new JPanel[SUB_N][SUB_N];
     private JTextField[][] textGrid = new JTextField[N][N];
@@ -52,7 +55,6 @@ public class gui
             {
                 currentGrid = new grid(new int[]{4, 5});
                 currentPlayer = new player(currentGrid);
-                currentGrid.print();
                 clearGridGUI();
                 fillGridGUI();
             }
@@ -65,7 +67,6 @@ public class gui
             {
                 currentGrid = new grid(new int[]{5, 6});
                 currentPlayer = new player(currentGrid);
-                currentGrid.print();
                 clearGridGUI();
                 fillGridGUI();
             }
@@ -78,7 +79,6 @@ public class gui
             {
                 currentGrid = new grid(new int[]{6, 7});
                 currentPlayer = new player(currentGrid);
-                currentGrid.print();
                 clearGridGUI();
                 fillGridGUI();
             }
@@ -103,17 +103,16 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 updatePlayerGridFromGUI();
-                currentPlayer.getPlayerGrid().print();
 
                 // Board is valid
                 if(currentPlayer.determineVictory())
                 {
-                    displayCorrectPanel();
+                    displayPanel(correctPanel);
                 }
                 // Board is invalid
                 else
                 {
-                    displayIncorrectPanel();
+                    displayPanel(incorrectPanel);
                 }
             }
         });
@@ -124,7 +123,7 @@ public class gui
             public void actionPerformed(ActionEvent e)
             {
                 clearGridGUI();
-                displayGamePanel();
+                displayPanel(gamePanel);
             }
         });
 
@@ -133,7 +132,16 @@ public class gui
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                displayGamePanel();
+                displayPanel(gamePanel);
+            }
+        });
+
+        sudokuButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayPanel(creditsPanel);
             }
         });
     }
@@ -192,7 +200,7 @@ public class gui
             }
         }
 
-        displayGamePanel();
+        displayPanel(gamePanel);
     }
 
     private void initBoardGUI()
@@ -305,26 +313,10 @@ public class gui
         });
     }
 
-    public void displayCorrectPanel()
+    public void displayPanel(JPanel panel)
     {
         switchPanel.removeAll();
-        switchPanel.add(correctPanel);
-        switchPanel.repaint();
-        switchPanel.revalidate();
-    }
-
-    public void displayIncorrectPanel()
-    {
-        switchPanel.removeAll();
-        switchPanel.add(incorrectPanel);
-        switchPanel.repaint();
-        switchPanel.revalidate();
-    }
-
-    public void displayGamePanel()
-    {
-        switchPanel.removeAll();
-        switchPanel.add(gamePanel);
+        switchPanel.add(panel);
         switchPanel.repaint();
         switchPanel.revalidate();
     }
