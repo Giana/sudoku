@@ -11,7 +11,6 @@ public class player
     static int N = 9;     // Length of row/column
 
     grid playerGrid;      // player's grid
-    grid referenceGrid;   // Generated grid
 
     /**
      * This is the parameterized constructor for
@@ -27,7 +26,6 @@ public class player
      */
     public player(grid referenceGrid)
     {
-        this.referenceGrid = referenceGrid;
         playerGrid = new grid();
 
         // Iterate over rows
