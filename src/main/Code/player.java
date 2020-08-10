@@ -1,5 +1,11 @@
 package main.Code;
 
+/**
+ * The Sudoku program is a sudoku game with a solver.
+ *
+ * @author  Giana (Github: G-i-a-n-a - Website: Giana.dev)
+ * @version N/A
+ */
 public class player
 {
     static int N = 9;     // Length of row/column
