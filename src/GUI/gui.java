@@ -326,6 +326,7 @@ public class gui
         JFrame gameFrame = new JFrame("Sudoku");
         gameFrame.setContentPane(new gui().parentPanel);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setResizable(false);
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
