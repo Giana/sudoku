@@ -3,30 +3,35 @@ package main.Code;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Sudoku program is a sudoku game with a solver.
+ *
+ * @author  Giana (Github: G-i-a-n-a - Website: Giana.dev)
+ * @version N/A
+ */
 public class grid
 {
-    static int TOTAL_N = 81;
-    static int N = 9;
-    static int SUB_N = 3;
+    static int TOTAL_N = 81;   // Total number of tiles in grid
+    static int N = 9;          // Length of row/column
+    static int SUB_N = 3;      // Length of subgrid row/column
 
-    tile[][] tiles;
-    boolean solved;
-    int[] possibleInvisible;
+    tile[][] tiles;            // Tiles in grid
+    boolean solved;            // If grid is currently solved
+    int[] possibleInvisible;   // Possible invisible tiles per subgrid (values won't be shown in GUI)
 
-    public tile[][] getTiles() { return this.tiles; }
-
-    public void setTiles(tile[][] tiles) { this.tiles = tiles; }
-
-    public boolean getSolved() { return this.solved; }
-
-    public void setSolved(boolean solved) { this.solved = solved; }
-
+    /**
+     * This is the default constructor for grid.
+     * It instantiates the tiles array and every
+     * tile within it.
+     */
     public grid()
     {
         tiles = new tile[N][N];
 
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
                 tiles[i][j] = new tile(i, j);
@@ -34,13 +39,29 @@ public class grid
         }
     }
 
+    /**
+     * This is the parameterized constructor for
+     * grid. It instantiates the tiles array and
+     * sets the possibleInvisible variable to what
+     * is passed into the method. It instantiates
+     * every tile within the tiles array. It calls
+     * the fill() method to fill every tile with a
+     * value and create a valid sudoku board. It
+     * calls the generateVisibility() method to
+     * decide which tile's values will be visible
+     * in the grid once displayed in the GUI.
+     * @param possibleInvisible Possible invisible
+     *                          tiles per subgrid
+     */
     public grid(int[] possibleInvisible)
     {
         tiles = new tile[N][N];
         this.possibleInvisible = possibleInvisible;
 
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
                 tiles[i][j] = new tile(i, j);
@@ -51,44 +72,78 @@ public class grid
         generateVisibility();
     }
 
+    /**
+     * @return tile[][] grid's tiles variable
+     */
+    public tile[][] getTiles() { return this.tiles; }
+
+    /**
+     * @return boolean tile's solved variable
+     */
+    public boolean getSolved() { return this.solved; }
+
+    /**
+     * This method is used to clear a grid,
+     * which is to set every tile's value to
+     * 0.
+     */
     public void clear()
     {
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
-                tiles[i][j].clearTile();
+                tiles[i][j].clearTile();   // Set current tile's value to 0
             }
         }
     }
 
-    // Generates list of numbers to turn invisible of length numInvisible
+    /**
+     * This method is used to generate a list
+     * of numbers to set "invisible" in a
+     * subgrid of length numInvisible.
+     * @param numInvisible Number of invisible
+     *                     numbers to generate
+     * @return ArrayList List of numbers to set
+     *                   invisible in a subgrid
+     */
     public ArrayList<Integer> generateInvisibleNumbers(int numInvisible)
     {
-        ArrayList<Integer> possibleNumbers = new ArrayList<>();
-        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<Integer> possibleNumbers = new ArrayList<>();   // Possible numbers to be invisible
+        ArrayList<Integer> result = new ArrayList<>();            // Resulting array of invisible numbers
 
-        for(int i = 1; i < N + 1; i++)
+        for(int i = 1; i <= N; i++)
         {
-            possibleNumbers.add(i);
+            possibleNumbers.add(i);   // Add i to possibleNumbers
         }
 
         for(int i = 0; i < numInvisible; i++)
         {
-            Random rand = new Random();
-            int index = rand.nextInt(possibleNumbers.size());
-            result.add(possibleNumbers.get(index));
-            possibleNumbers.remove(index);
+            Random rand = new Random();                         // Random seed
+            int index = rand.nextInt(possibleNumbers.size());   // Get random index from possibleNumbers
+            result.add(possibleNumbers.get(index));             // Add possibleNumbers at random index to result
+            possibleNumbers.remove(index);                      // Remove possibleNumbers at random index from possibleNumbers
         }
 
         return result;
     }
 
+    /**
+     * This method is used to generate which
+     * numbers are to be fixed/visible and
+     * which are to be not fixed/"invisible"
+     * for a given subgrid in the grid.
+     * @param x x-coordinate of subgrid
+     * @param y y-coordinate of subgrid
+     */
     public void generateVisibilityPerSubgrid(int x, int y)
     {
-        Random rand = new Random();
-        int index = rand.nextInt(possibleInvisible.length);   // Random index
-        int numInvisible = possibleInvisible[index];          // Number of invisible numbers in this subgrid
+        Random rand = new Random();                           // Random seed
+        int index = rand.nextInt(possibleInvisible.length);   // Get random index from possibleInvisible
+        int numInvisible = possibleInvisible[index];          // Number of invisible numbers is possibleInvisible
+                                                              // at random index
 
         ArrayList<Integer> invisibleNumbers = generateInvisibleNumbers(numInvisible);   // Holds subgrid numbers
                                                                                         // which will not be visible
@@ -98,7 +153,7 @@ public class grid
             // Iterate over subgrid columns
             for (int j = y; j < SUB_N + y; j++)
             {
-                tile currTile = tiles[i][j];
+                tile currTile = tiles[i][j];   // Grab current tile
 
                 // Tile visibility/fixed true if invisibleNumbers doesn't contain current tile's value
                 currTile.setVisible(!invisibleNumbers.contains(currTile.getValue()));
@@ -107,32 +162,49 @@ public class grid
         }
     }
 
+    /**
+     * This method is used to generate which
+     * numbers are to be fixed/visible and
+     * which are to be not fixed/"invisible"
+     * for every subgrid in the grid.
+     */
     public void generateVisibility()
     {
-        // Iterate over grid rows
+        // Iterate over rows
         for(int i = 0; i < N; i += 3)
         {
-            // Iterate over grid columns
+            // Iterate over columns
             for(int j = 0; j < N; j += 3)
             {
-                generateVisibilityPerSubgrid(i, j);
+                generateVisibilityPerSubgrid(i, j);   // Generate visible/fixed tiles for current subgrid
             }
         }
     }
 
-    public boolean rowViolation(tile currTile)
+    /**
+     * This method is used to check if the
+     * given tile is in violation of row rules
+     * for sudoku.
+     * @param tileToCheck Tile to be checked
+     * @return boolean If tileToCheck is in
+     *                 violation of sudoku
+     *                 row rules
+     */
+    public boolean rowViolation(tile tileToCheck)
     {
-        int row = currTile.getX();
-        int tileVal = currTile.getValue();
+        int row = tileToCheck.getX();           // tileToCheck's x-coordinate (row number)
+        int tileVal = tileToCheck.getValue();   // tileToCheck's value
 
         // Iterate over row
         for(int i = 0; i < N; i++)
         {
-            int currVal = tiles[row][i].getValue();
+            int currVal = tiles[row][i].getValue();   // current tile's value
 
-            // There is a row violation
-            if(tileVal == currVal && tiles[row][i] != currTile)
+            // Current tile's value is the same at tileToCheck's value
+            // and they are not the same tile
+            if(tileVal == currVal && tiles[row][i] != tileToCheck)
             {
+                // There is a row violation
                 return true;
             }
         }
@@ -141,19 +213,30 @@ public class grid
         return false;
     }
 
-    public boolean columnViolation(tile currTile)
+    /**
+     * This method is used to check if the
+     * given tile is in violation of column
+     * rules for sudoku.
+     * @param tileToCheck Tile to be checked
+     * @return boolean If tileToCheck is in
+     *                 violation of sudoku
+     *                 column rules
+     */
+    public boolean columnViolation(tile tileToCheck)
     {
-        int column = currTile.getY();
-        int tileVal = currTile.getValue();
+        int column = tileToCheck.getY();        // tileToCheck's y-coordinate (column number)
+        int tileVal = tileToCheck.getValue();   // tileToCheck's value
 
         // Iterate over column
         for(int i = 0; i < N; i++)
         {
-            int currVal = tiles[i][column].getValue();
+            int currVal = tiles[i][column].getValue();   // current tile's value
 
-            // There is a column violation
-            if(tileVal == currVal && tiles[i][column] != currTile)
+            // Current tile's value is the same at tileToCheck's value
+            // and they are not the same tile
+            if(tileVal == currVal && tiles[i][column] != tileToCheck)
             {
+                // There is a column violation
                 return true;
             }
         }
@@ -162,11 +245,20 @@ public class grid
         return false;
     }
 
-    public boolean subgridViolation(tile currTile)
+    /**
+     * This method is used to check if the
+     * given tile is in violation of subgrid
+     * rules for sudoku.
+     * @param tileToCheck Tile to be checked
+     * @return boolean If tileToCheck is in
+     *                 violation of sudoku
+     *                 subgrid rules
+     */
+    public boolean subgridViolation(tile tileToCheck)
     {
-        int x = currTile.getSubgrid()[0];
-        int y = currTile.getSubgrid()[1];
-        int tileVal = currTile.getValue();
+        int x = tileToCheck.getSubgrid()[0];    // tileToCheck's subgrid's x-coordinate
+        int y = tileToCheck.getSubgrid()[1];    // tileToCheck's subgrid's y-coordinate
+        int tileVal = tileToCheck.getValue();   // tileToCheck's value
 
         // Iterate over subgrid rows
         for(int i = x; i < SUB_N + x; i++)
@@ -174,11 +266,13 @@ public class grid
             // Iterate over subgrid columns
             for(int j = y; j < SUB_N + y; j++)
             {
-                int currVal = tiles[i][j].getValue();
+                int currVal = tiles[i][j].getValue();   // current tile's value
 
-                // There is a subgrid violation
-                if(tileVal == currVal && tiles[i][j] != currTile)
+                // Current tile's value is the same at tileToCheck's value
+                // and they are not the same tile
+                if(tileVal == currVal && tiles[i][j] != tileToCheck)
                 {
+                    // There is a subgrid violation
                     return true;
                 }
             }
@@ -188,21 +282,46 @@ public class grid
         return false;
     }
 
-    public boolean violation(tile currTile)
+    /**
+     * This method is used to check if the
+     * given tile is in violation of row,
+     * column, or subgrid rules for sudoku.
+     * @param tileToCheck Tile to be checked
+     * @return boolean If tileToCheck is in
+     *                 violation of sudoku
+     *                 rules
+     */
+    public boolean violation(tile tileToCheck)
     {
         // Return if there is a violation
-        return rowViolation(currTile) || columnViolation(currTile) || subgridViolation(currTile);
+        return rowViolation(tileToCheck) || columnViolation(tileToCheck) || subgridViolation(tileToCheck);
     }
 
+    /**
+     * This method is used to retrieve the
+     * tile that comes before the given tile
+     * in the grid.
+     * @param currTile Tile to retrieve the
+     *                 previous of
+     * @return tile Previous tile
+     */
     private tile getPreviousTile(tile currTile)
     {
-        int x = currTile.getX();
-        int y = currTile.getY();
+        int x = currTile.getX();   // currTile's x-coordinate
+        int y = currTile.getY();   // currTile's y-coordinate
 
         // currTile is the first tile in a row
         if(y == 0)
         {
-            return tiles[x - 1][8];
+            // currTile is the first tile in the grid
+            if(x == 0)
+            {
+                // There is no previous tile
+                return null;
+            }
+
+            // currTile is not the first tile in the grid
+            return tiles[x - 1][N - 1];
         }
         // currTile is not the first tile in a row
         else
@@ -211,21 +330,30 @@ public class grid
         }
     }
 
+    /**
+     * This method is used to retrieve the
+     * tile that comes after the given tile
+     * in the grid.
+     * @param currTile Tile to retrieve the
+     *                 next of
+     * @return tile Next tile
+     */
     private tile getNextTile(tile currTile)
     {
-        int x = currTile.getX();
-        int y = currTile.getY();
+        int x = currTile.getX();   // currTile's x-coordinate
+        int y = currTile.getY();   // currTile's y-coordinate
 
         // currTile is the last tile in a row
-        if(y == 8)
+        if(y == N - 1)
         {
-            // Next tile doesn't exist
-            if(x + 1 == N)
+            // currTile is the last tile in the grid
+            if(x == N - 1)
             {
+                // There is no next tile
                 return null;
             }
 
-            // Next tile exists
+            // currTile is not the last tile in the grid
             return tiles[x + 1][0];
         }
         // currTile is not the last tile in a row
@@ -235,12 +363,17 @@ public class grid
         }
     }
 
+    /**
+     * This method is used to fill the grid
+     * with values to generate a valid sudoku
+     * board.
+     */
     private void fill()
     {
-        clear();
+        clear();   // Clear the grid
 
-        int filled = 0;
-        tile currTile = tiles[0][0];
+        int filled = 0;                // Number of tiles that have been filled with new values
+        tile currTile = tiles[0][0];   // Start at the first tile in the grid
 
         // While all tiles have not been filled with values
         while(filled != TOTAL_N)
@@ -254,79 +387,96 @@ public class grid
                     // We are not on the last tile
                     if(filled != TOTAL_N - 1)
                     {
-                        currTile = getNextTile(currTile);
+                        currTile = getNextTile(currTile);   // Move forward a tile
                     }
 
-                    filled++;
+                    filled++;   // +1 tile has been filled
                 }
             }
-            // There is no available number left to try for currTile
+            // There is not an available number left to try for currTile
             else
             {
-                currTile.replenishAvailableNumbers();
-                currTile.setValue(0);
-                currTile = getPreviousTile(currTile);
-                filled--;
+                currTile.replenishAvailableNumbers();   // Refill available numbers to try for currTile
+                currTile.clearTile();                   // Set tile value to 0
+                currTile = getPreviousTile(currTile);   // Move back a tile
+                filled--;                               // -1 tile has been filled
             }
         }
     }
 
-    // Replenish available numbers for all tiles
+    /**
+     * This method is used to replenish
+     * available numbers for all tiles
+     * in the grid.
+     */
     public void replenish()
     {
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
-                tiles[i][j].replenishAvailableNumbers();
+                tiles[i][j].replenishAvailableNumbers();   // Replenish available numbers for current tile
             }
         }
     }
 
+    /**
+     * This method is used solve one "step" of
+     * a grid, given a tile to start from. It
+     * will look at the current tile and move
+     * forward in solution steps as is necessary.
+     * @param currTile Tile to start from
+     * @return tile Tile to proceed from
+     */
     public tile solveOneStep(tile currTile)
     {
         // While all tiles have not been solved
-         if(currTile != null)
+        if(currTile != null)
         {
-            // currTile is fixed (does not need to be "solved")
+            // currTile is fixed (does not need to be solved)
             if(currTile.getFixed())
             {
-                currTile.setVisible(true);   // TODO: probably redundant
+                // Move forward a tile
                 return getNextTile(currTile);
             }
-            // currTile is not fixed (needs to be "solved")
+            // currTile is not fixed (potentially needs to be solved)
             else
             {
                 // There is an available number left to try for currTile
                 if(currTile.setRandomValue())
                 {
-                    currTile.setVisible(true);
+                    currTile.setVisible(true);   // Value filled, make visible
 
                     // currTile does not violate sudoku rules
                     if(!violation(currTile))
                     {
+                        // Move forward a tile
                         return getNextTile(currTile);
                     }
                     // currTile violates sudoku rules
                     else
                     {
+                        // Proceed from currTile
                         return currTile;
                     }
                 }
-                // There is no available number left to try for currTile
+                // There is not an available number left to try for currTile
                 else
                 {
-                    currTile.replenishAvailableNumbers();
-                    currTile.clearTile();
-                    currTile.setVisible(false);
-                    currTile = getPreviousTile(currTile);
+                    currTile.replenishAvailableNumbers();   // Refill available numbers to try for currTile
+                    currTile.clearTile();                   // Set tile value to 0
+                    currTile.setVisible(false);             // Make currTile invisible/not visible
+                    currTile = getPreviousTile(currTile);   // Move back a tile
 
-                    // Keep moving back while currTile is fixed
+                    // While currTile is fixed (we need to move back further)
                     while(currTile.getFixed())
                     {
-                        currTile = getPreviousTile(currTile);
+                        currTile = getPreviousTile(currTile);   // Move back a tile
                     }
 
+                    // Proceed from this previous non-fixed tile
                     return currTile;
                 }
             }
@@ -334,127 +484,10 @@ public class grid
         // All tiles have been solved
         else
         {
-            solved = true;
+            solved = true;   // Grid has been solved
+
+            // Nothing to proceed from
             return null;
         }
-    }
-
-    public void solve()
-    {
-        int solved = 0;
-        tile currTile = tiles[0][0];
-
-        replenish();
-
-        // While all tiles have not been solved
-        while(solved != TOTAL_N)
-        {
-            // currTile is fixed (does not need to be "solved")
-            if(currTile.getFixed())
-            {
-                // We are not on the last tile
-                if(solved != TOTAL_N - 1)
-                {
-                    currTile = getNextTile(currTile);
-                }
-
-                solved++;
-                //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-            }
-            // currTile is not fixed (needs to be "solved")
-            else
-            {
-                // There is an available number left to try for currTile
-                if(currTile.setRandomValue())
-                {
-                    currTile.setVisible(true);
-
-                    // currTile does not violate sudoku rules
-                    if(!violation(currTile))
-                    {
-                        // We are not on the last tile
-                        if(solved != TOTAL_N - 1)
-                        {
-                            currTile = getNextTile(currTile);
-                        }
-
-                        solved++;
-                    }
-
-                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-                }
-                // There is no available number left to try for currTile
-                else
-                {
-                    currTile.replenishAvailableNumbers();
-                    currTile.setVisible(false);
-                    currTile = getPreviousTile(currTile);
-                    solved--;
-                    //try{Thread.sleep(150);} catch(Exception e) {System.out.println(e);}
-                }
-            }
-        }
-    }
-
-    public void refreshForSolver()
-    {
-        for(int i = 0; i < N; i++)
-        {
-            for(int j = 0; j < N; j++)
-            {
-                if(!tiles[i][j].getFixed())
-                {
-                    tiles[i][j].clearTile();
-                }
-            }
-        }
-    }
-
-    public void print()
-    {
-        for(int i = 0; i < N; i++)
-        {
-            for(int j = 0; j < N; j++)
-            {
-                System.out.print(tiles[i][j].getValue() + " ");
-            }
-
-            System.out.println();
-        }
-
-        System.out.println();
-    }
-
-    public void printWithInvisibleTiles()
-    {
-        for(int i = 0; i < N; i++)
-        {
-            for(int j = 0; j < N; j++)
-            {
-                if(tiles[i][j].getVisible())
-                {
-                    System.out.print(tiles[i][j].getValue() + " ");
-                }
-                else
-                {
-                    System.out.print("X" + " ");
-                }
-            }
-
-            System.out.println();
-        }
-
-        System.out.println();
-    }
-
-    public static void main(String[] args)
-    {
-        int[] testInvisible = {4, 5};
-
-        grid testGrid = new grid(testInvisible);
-
-        testGrid.print();
-        testGrid.printWithInvisibleTiles();
-        testGrid.solve();
     }
 }

@@ -11,6 +11,8 @@ import java.util.Random;
  */
 public class tile
 {
+    static int N = 9;                      // Length of row/column
+
     private int value;                     // Value assigned to tile
     private int x;                         // x-coordinate of tile
     private int y;                         // y-coordinate of tile
@@ -130,8 +132,8 @@ public class tile
     {
         this.availableNumbers.clear();   // Empty availableNumbers
 
-        // Iterate from 1 to 9
-        for(int i = 1; i <= 9; i++)
+        // Iterate from 1 to N
+        for(int i = 1; i <= N; i++)
         {
             this.availableNumbers.add(i);   // Add i to availableNumbers
         }
