@@ -1,155 +1,166 @@
 package GUI;
 
-import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import main.Code.tile;
+import javax.swing.border.Border;
+import javax.swing.*;
 import main.Code.grid;
 import main.Code.player;
+import main.Code.tile;
 
+/**
+ * The Sudoku program is a sudoku game with a solver.
+ *
+ * @author  Giana (Github: G-i-a-n-a - Website: Giana.dev)
+ * @version N/A
+ */
 public class gui
 {
-    static int TOTAL_N = 81;
-    static int N = 9;
-    static int SUB_N = 3;
+    static int N = 9;       // Length of row/column
+    static int SUB_N = 3;   // Length of row/column
 
-    private JPanel parentPanel;
-    private JPanel switchPanel;
-    private JPanel gamePanel;
+    static int[] easy = new int[] {4, 5};     // Easy possible invisible
+    static int[] medium = new int[] {5, 6};   // Medium possible invisible
+    static int[] hard = new int[] {6, 7};     // Hard possible invisible
+
+    private JButton continueButton;
     private JButton easyButton;
-    private JButton mediumButton;
+    private JButton forfeitButton;
     private JButton hardButton;
-    private JPanel boardPanel;
-    private JPanel gridPanel;
-    private JPanel correctPanel;
-    private JToolBar gameToolBar;
-    private JButton sudokuButton;
+    private JButton mediumButton;
     private JButton solveButton;
+    private JButton sudokuButton;
     private JButton validateButton;
     private JLabel correctLogoImage;
-    private JPanel incorrectPanel;
     private JLabel incorrectLogoImage;
+    private JPanel boardPanel;
+    private JPanel gamePanel;
+    private JPanel gridPanel;
     private JPanel choicesPanel;
-    private JButton continueButton;
-    private JButton forfeitButton;
+    private JPanel correctPanel;
     private JPanel creditsPanel;
+    private JPanel incorrectPanel;
+    private JPanel parentPanel;
+    private JPanel switchPanel;
     private JTextPane creditsTextPane1;
     private JTextPane creditsTextPane2;
+    private JToolBar gameToolBar;
 
-    private JPanel[][] panelGrid = new JPanel[SUB_N][SUB_N];
-    private JTextField[][] textGrid = new JTextField[N][N];
+    private JPanel[][] panelGrid = new JPanel[SUB_N][SUB_N];   // "Subgrids"
+    private JTextField[][] textGrid = new JTextField[N][N];    // "Tiles"
+
     private grid currentGrid;
     private player currentPlayer;
     private Thread solver;
 
     public gui()
     {
-        initBoardGUI();
+        initBoardGUI();   // Fill in board GUI
 
-        easyButton.addActionListener(new ActionListener()
+        /*
+         * This listener outlines what happens if you click the
+         * "Sudoku" button on the toolbar.
+         */
+        sudokuButton.addActionListener(e -> displayPanel(creditsPanel));
+
+        /*
+         * This listener outlines what happens if you click the
+         * "Easy" button on the toolbar.
+         */
+        easyButton.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
+            currentGrid = new grid(easy);
+            currentPlayer = new player(currentGrid);
+            clearGridGUI();
+            fillGridGUI();
+            displayPanel(gamePanel);
+        });
+
+        /*
+         * This listener outlines what happens if you click the
+         * "Medium" button on the toolbar.
+         */
+        mediumButton.addActionListener(e ->
+        {
+            currentGrid = new grid(medium);
+            currentPlayer = new player(currentGrid);
+            clearGridGUI();
+            fillGridGUI();
+            displayPanel(gamePanel);
+        });
+
+        /*
+         * This listener outlines what happens if you click the
+         * "Hard" button on the toolbar.
+         */
+        hardButton.addActionListener(e ->
+        {
+            currentGrid = new grid(hard);
+            currentPlayer = new player(currentGrid);
+            clearGridGUI();
+            fillGridGUI();
+            displayPanel(gamePanel);
+        });
+
+        /*
+         * This listener outlines what happens if you click the
+         * "Solve" button on the toolbar.
+         */
+        solveButton.addActionListener(e ->
+        {
+            clearGridGUI();
+            fillGridGUI();
+            displayPanel(gamePanel);
+            setUpSolver();
+            solver.start();
+        });
+
+        /*
+         * This listener outlines what happens if you click the
+         * "Validate" button on the toolbar.
+         */
+        validateButton.addActionListener(e ->
+        {
+            updatePlayerGridFromGUI();
+
+            // Board is valid
+            if(currentPlayer.determineVictory())
             {
-                currentGrid = new grid(new int[]{4, 5});
-                currentPlayer = new player(currentGrid);
-                clearGridGUI();
-                fillGridGUI();
+                displayPanel(correctPanel);
+            }
+            // Board is not valid
+            else
+            {
+                displayPanel(incorrectPanel);
             }
         });
 
-        mediumButton.addActionListener(new ActionListener()
+        /*
+         * This listener outlines what happens if you click the
+         * "Forfeit" button on the incorrectPanel.
+         */
+        forfeitButton.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                currentGrid = new grid(new int[]{5, 6});
-                currentPlayer = new player(currentGrid);
-                clearGridGUI();
-                fillGridGUI();
-            }
+            clearGridGUI();
+            displayPanel(gamePanel);
         });
 
-        hardButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                currentGrid = new grid(new int[]{6, 7});
-                currentPlayer = new player(currentGrid);
-                clearGridGUI();
-                fillGridGUI();
-            }
-        });
-
-        solveButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                currentPlayer.getPlayerGrid().replenish();
-                clearGridGUI();
-                fillGridGUI();
-                setUpSolver();
-                solver.start();
-            }
-        });
-
-        validateButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                updatePlayerGridFromGUI();
-
-                // Board is valid
-                if(currentPlayer.determineVictory())
-                {
-                    displayPanel(correctPanel);
-                }
-                // Board is invalid
-                else
-                {
-                    displayPanel(incorrectPanel);
-                }
-            }
-        });
-
-        forfeitButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                clearGridGUI();
-                displayPanel(gamePanel);
-            }
-        });
-
-        continueButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                displayPanel(gamePanel);
-            }
-        });
-
-        sudokuButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                displayPanel(creditsPanel);
-            }
-        });
+        /*
+         * This listener outlines what happens if you click the
+         * "Continue" button on the incorrectPanel.
+         */
+        continueButton.addActionListener(e -> displayPanel(gamePanel));
     }
 
+    /**
+     * This method is used to clear the grid in the
+     * GUI.
+     */
     private void clearGridGUI()
     {
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
                 textGrid[i][j].setText("");
@@ -159,16 +170,25 @@ public class gui
         }
     }
 
+    /**
+     * This method is used to refresh the grid in the
+     * GUI, displaying all values which are visible
+     * in the current player's grid.
+     */
     private void refreshBoardGUI()
     {
+        grid playerGrid = currentPlayer.getPlayerGrid();
+
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
                 // Current tile is visible
-                if(currentPlayer.getPlayerGrid().getTiles()[i][j].getVisible())
+                if(playerGrid.getTiles()[i][j].getVisible())
                 {
-                    textGrid[i][j].setText(Integer.toString(currentPlayer.getPlayerGrid().getTiles()[i][j].getValue()));
+                    textGrid[i][j].setText(Integer.toString(playerGrid.getTiles()[i][j].getValue()));
                 }
                 // Current tile is not visible
                 else
@@ -179,38 +199,51 @@ public class gui
         }
     }
 
+    /**
+     * This method is used to fill the grid in
+     * the GUI with fixed values and to set the
+     * background colors and ability to be edited
+     * for each tile as necessary.
+     */
     private void fillGridGUI()
     {
-        // Set up textGrid
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
-
+                // Current tile is fixed
                 if(currentGrid.getTiles()[i][j].getFixed())
                 {
                     textGrid[i][j].setText(Integer.toString(currentGrid.getTiles()[i][j].getValue()));
                     textGrid[i][j].setBackground(Color.decode("#BABABA"));
                     textGrid[i][j].setEditable(false);
                 }
+                // Current tile is not fixed
                 else
                 {
                     textGrid[i][j].setEditable(true);
                 }
             }
         }
-
-        displayPanel(gamePanel);
     }
 
+    /**
+     * This method is used to initialize the grid
+     * in the GUI with appropriate layouts, fonts,
+     * borders, dimensions, etc.
+     */
     private void initBoardGUI()
     {
-        gridPanel.setLayout(new GridLayout(3, 3));
+        gridPanel.setLayout(new GridLayout(3, 3));                // Holds N subgrids (JPanels)
+        gridPanel.setPreferredSize(new Dimension(600, 600));
+
         Font boardFont = new Font("Monospaced", Font.BOLD, 30);
         Border tileBorder = BorderFactory.createLineBorder(Color.decode("#1E7BCA"), 1);
         Border subgridBorder = BorderFactory.createLineBorder(Color.decode("#60B0F4"), 2);
 
-        // Set up panelGrid
+        // Set up panelGrid (holds N JPanels/subgrids) to add to gridPanel
         for(int i = 0; i < SUB_N; i++)
         {
             for(int j = 0; j < SUB_N; j++)
@@ -219,11 +252,10 @@ public class gui
                 panelGrid[i][j].setLayout(new GridLayout(SUB_N, SUB_N));
                 panelGrid[i][j].setBorder(subgridBorder);
                 gridPanel.add(panelGrid[i][j]);
-                gridPanel.setPreferredSize(new Dimension(600, 600));
             }
         }
 
-        // Set up textGrid
+        // Set up textGrid (holds N * N JTextFields/tiles)
         for(int i = 0; i < N; i++)
         {
             for(int j = 0; j < N; j++)
@@ -232,14 +264,14 @@ public class gui
                 textGrid[i][j].setBorder(tileBorder);
                 textGrid[i][j].setBackground(Color.decode("#E4E4E4"));
                 textGrid[i][j].setOpaque(true);
-                textGrid[i][j].setFont(boardFont);
                 textGrid[i][j].setEditable(false);
+                textGrid[i][j].setFont(boardFont);
                 textGrid[i][j].setHorizontalAlignment(JTextField.CENTER);
             }
         }
 
-        int x = 0;
-        int y = 0;
+        int x = 0;   // Subgrid x-coordinate
+        int y = 0;   // Subgrid y-coordinate
 
         // Iterate over panelGrid
         for(int i = 0; i < SUB_N; i++)
@@ -264,10 +296,17 @@ public class gui
         }
     }
 
+    /**
+     * This method is used to update the values in
+     * player grid based on what is present in the
+     * grid in the GUI.
+     */
     public void updatePlayerGridFromGUI()
     {
+        // Iterate over rows
         for(int i = 0; i < N; i++)
         {
+            // Iterate over columns
             for(int j = 0; j < N; j++)
             {
                 String currentString = textGrid[i][j].getText();
@@ -282,7 +321,7 @@ public class gui
                     {
                         currentPlayer.getPlayerGrid().getTiles()[i][j].setValue(Integer.parseInt(currentString));
                     }
-                    // Current tile is an invalid player entry
+                    // Current tile is not a valid player entry
                     else
                     {
                         currentPlayer.getPlayerGrid().getTiles()[i][j].setValue(0);
@@ -292,27 +331,35 @@ public class gui
         }
     }
 
+    /**
+     * This method is used to set up the solver
+     * thread.
+     */
     public void setUpSolver()
     {
-        // Thread for solver
         solver = new Thread(() ->
         {
             grid playerGrid = currentPlayer.getPlayerGrid();
-
+            playerGrid.replenish();
             refreshBoardGUI();
-            tile currentTile = playerGrid.getTiles()[0][0];
+            tile currentTile = playerGrid.getTiles()[0][0];   // Start at the first tile in the grid
 
-            // While current board hasn't been solved
+            // While current grid hasn't been solved
             while(!playerGrid.getSolved())
             {
-                currentTile = playerGrid.solveOneStep(currentTile);
-                refreshBoardGUI();
+                currentTile = playerGrid.solveOneStep(currentTile);   // Perform a solution step
+                refreshBoardGUI();                                    // Update GUI
             }
 
             solver.interrupt();
         });
     }
 
+    /**
+     * This method is used to display a
+     * specified JPanel in switchPanel.
+     * @param panel JPanel to be displayed
+     */
     public void displayPanel(JPanel panel)
     {
         switchPanel.removeAll();
