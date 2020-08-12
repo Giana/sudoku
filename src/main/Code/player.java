@@ -4,7 +4,7 @@ package main.Code;
  * The Sudoku program is a sudoku game with a solver.
  *
  * @author  Giana (Github: G-i-a-n-a - Website: Giana.dev)
- * @version N/A
+ * @version 1.0.0 - 2020-08-12
  */
 public class player
 {
