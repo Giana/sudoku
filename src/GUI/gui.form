@@ -138,7 +138,7 @@
                   <background color="-1776412"/>
                   <font name="Calibri" size="22" style="0"/>
                   <foreground color="-13729386"/>
-                  <text value="My name is Giana, and I created this game from July 2020 to August 2020. The code was written by me in Java, and the GUI was done using Swing and IntelliJ GUI Designer.&#10;&#10;Email: Giana@giana.dev&#10;Github: github.com/G-i-a-n-a&#10;Website: Giana.dev"/>
+                  <text value="My name is Giana, and I created this game from July 2020 to August 2020. The code was written by me in Java, and the GUI was done using Swing and IntelliJ GUI Designer.&#10;&#10;Email: Giana@giana.dev&#10;Github: github.com/Giana&#10;Website: Giana.dev"/>
                 </properties>
               </component>
               <vspacer id="22254">

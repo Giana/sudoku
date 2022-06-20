@@ -6,8 +6,8 @@ import java.util.Random;
 /**
  * The Sudoku program is a sudoku game with a solver.
  *
- * @author  Giana (Github: G-i-a-n-a - Website: Giana.dev)
- * @version 1.0.0 - 2020-08-12
+ * @author  Giana (Github: Giana - Website: Giana.dev)
+ * @version 1.0.1 - 2022-06-20
  */
 public class tile
 {
