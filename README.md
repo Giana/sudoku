@@ -9,7 +9,7 @@ A Java-made desktop game. It's sudoku with a solver.
 ![Solving Medium](https://i.ibb.co/r6Tgdw3/medium-Sudoku-Board-Solving.gif)
 
 ## Version
-*1.0.0 as of 2020-08-12*
+*1.0.1 as of 2022-06-20*
 
 ## To Launch
 Launch *Sudoku.exe* from the project folder  
